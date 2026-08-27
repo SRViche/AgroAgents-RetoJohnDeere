@@ -48,7 +48,7 @@ Property numbers refer to the design's Correctness Properties section. Each prop
 
 The port and its one adapter are introduced unused: `AgroAgents.Presentation` still has an empty `references` array (group 1), so nothing in the presentation assembly can see either new assembly yet. `GridManager` and the legacy controllers are still untouched and still the live path. This group is where `HarvestingCore` gets a second consumer, `AgroAgents.InMemoryAdapter`, besides the eventual `WorldBootstrapper`. It is placed ahead of the coordinate mapper and tick accumulator because `CoordinateMapper` is written directly against `PortGridPosition`, so the port must exist first.
 
-- [ ] 8. Create the `AgroAgents.SimulationPort` assembly and its DTOs
+- [x] 8. Create the `AgroAgents.SimulationPort` assembly and its DTOs
   - Create `Assets/Scripts/Port/AgroAgents.SimulationPort.asmdef` exactly as specified in Decision B1: empty `references`, `noEngineReferences: true`, `autoReferenced: false`, `rootNamespace` `AgroAgents.SimulationPort`
   - Create `PortGridPosition`, `PortCellState`, `PortStateId`, `PortAgentRole`, `PortHeuristicKind`, `PortCellSnapshot`, `PortAgentSnapshot`, `WorldSnapshot`, `WorldUpdate`, `PortAgentSpec`, `SessionRequest` exactly as given in Components and Interfaces. `PortHeuristicKind` mirrors `HarvestingCore.Configuration.HeuristicKind` by ordinal; the other three enums mirror `CellState`, `StateId`, `AgentRole` member-for-member
   - _Requirements: 1.4, 1.5, 1.10, 8.6, 9.1, 9.2, 10.1, 10.2, 11.1, 12.2_
