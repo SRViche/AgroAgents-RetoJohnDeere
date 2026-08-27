@@ -237,6 +237,7 @@ namespace AgroAgents.Presentation.Authoring
                 {
                     var binding = new AgentBinding(view.AgentId, view, agentSnapshot);
                     bindings.Add(binding);
+                    view.Bind(binding, Mapper);
                     boundIds.Add(view.AgentId);
                 }
                 else

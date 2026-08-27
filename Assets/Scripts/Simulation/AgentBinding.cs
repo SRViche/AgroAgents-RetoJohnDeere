@@ -1,3 +1,4 @@
+using AgroAgents.Presentation.Views;
 using AgroAgents.SimulationPort;
 
 namespace AgroAgents.Presentation.Simulation
@@ -12,11 +13,9 @@ namespace AgroAgents.Presentation.Simulation
         public string AgentId { get; }
 
         /// <summary>
-        /// The bound view. Typed loosely because <c>AgentView</c> does not exist
-        /// yet (introduced in group 6, task 31), which would otherwise be a
-        /// forward reference to a type this assembly cannot see.
+        /// The concrete <see cref="AgentView"/> bound to this agent.
         /// </summary>
-        public object View { get; }
+        public AgentView View { get; }
 
         public PortAgentSnapshot PreviousSnapshot { get; internal set; }
         public PortAgentSnapshot CurrentSnapshot { get; internal set; }
@@ -29,7 +28,7 @@ namespace AgroAgents.Presentation.Simulation
         /// from the matching entry of WorldSnapshot.Agents at bind time, so no
         /// null or sentinel case exists on the first frame. Req 5.1.
         /// </summary>
-        public AgentBinding(string agentId, object view, PortAgentSnapshot initialSnapshot)
+        public AgentBinding(string agentId, AgentView view, PortAgentSnapshot initialSnapshot)
         {
             AgentId = agentId;
             View = view;

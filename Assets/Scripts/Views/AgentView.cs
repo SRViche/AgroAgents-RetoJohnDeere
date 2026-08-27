@@ -70,6 +70,7 @@ namespace AgroAgents.Presentation.Views
 
         public string AgentId => agentId;
         public PortAgentRole Role => role;
+        public Vector2Int StartCell => startCell;
 
         /// <summary>
         /// Converted from the serialized <see cref="Vector2Int"/> surrogate.

@@ -140,9 +140,16 @@ namespace AgroAgents.Presentation.Simulation
 
             InterpolationAlpha = plan.InterpolationAlpha;
 
-            // Render views — AgentView.Render is wired in task 31 when AgentView exists.
-            // For now, AgentBinding.View is typed as object; the render loop will be
-            // completed once the concrete AgentView type is introduced.
+            // Render all bound agent views.
+            IReadOnlyList<AgentBinding> bindings = Bindings.Bindings;
+            for (int i = 0; i < bindings.Count; i++)
+            {
+                AgentView view = bindings[i].View;
+                if (view != null)
+                {
+                    view.Render(InterpolationAlpha, dt);
+                }
+            }
         }
 
         private void OnUpdateReceived(WorldUpdate update)

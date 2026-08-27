@@ -226,7 +226,7 @@ The largest group. `TileData` and `GridManager` are mutually dependent and every
 
 ## 6. Agent views replace the controllers
 
-- [ ] 29. Implement `StateVisual` and `StateVisualMap`
+- [x] 29. Implement `StateVisual` and `StateVisualMap`
   - Create `Assets/Scripts/Views/StateVisual.cs` and `Assets/Scripts/Views/StateVisualMap.cs`
   - `StateVisualMap` is a `ScriptableObject` with `[CreateAssetMenu]`, the serialized fields from its field table, `TryGet(PortStateId, out StateVisual)`, `Fallback`, and `MissingStates()` for editor validation
   - Populate all eight entries from the `PortStateId` → visual mapping table, including `Inactive`
@@ -235,7 +235,7 @@ The largest group. `TileData` and `GridManager` are mutually dependent and every
   - _Requirements: 8.1, 8.5, 8.6_
   - _Design: Data Models_
 
-- [ ] 30. Implement `AgentView`
+- [x] 30. Implement `AgentView`
   - Create `Assets/Scripts/Views/AgentView.cs`
   - `MonoBehaviour` with `[DisallowMultipleComponent]`, the public surface from Components and Interfaces, and every serialized field in the `AgentView` field table. `moveSpeed` and `arrivalTolerance` from the deleted `AgentController` are gone; `forwardOffsetY` is preserved
   - `startCell` is a `Vector2Int` surrogate because `PortGridPosition` is a readonly struct Unity cannot serialize
@@ -248,7 +248,7 @@ The largest group. `TileData` and `GridManager` are mutually dependent and every
   - _Requirements: 2.2, 2.3, 2.5, 5.2, 5.4, 5.5, 5.7, 5.8, 5.9, 8.2, 8.3, 8.4, 9.6_
   - _Design: Decision F_
 
-- [ ] 31. Wire `AgentView` into the binding registry, driver, and bootstrapper
+- [x] 31. Wire `AgentView` into the binding registry, driver, and bootstrapper
   - Modify `Assets/Scripts/Simulation/AgentBinding.cs` and `AgentBindingRegistry.cs` to hold the concrete `AgentView` reference
   - Modify `WorldBootstrapper`'s completion step (task 24) to find each `AgentView`'s matching entry in `snapshot.Agents` by id, call `Bind` on each binding with both snapshots set to that entry, and call `MarkUnbound()` on any `AgentView` whose id matched nothing
   - Modify `SimulationDriver.OnUpdateReceived` (task 22) to call `Render(alpha, dt)` on every bound view after `ApplyUpdate`

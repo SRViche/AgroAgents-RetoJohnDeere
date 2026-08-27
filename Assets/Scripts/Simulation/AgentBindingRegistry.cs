@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AgroAgents.Presentation.Views;
 using AgroAgents.SimulationPort;
 
 namespace AgroAgents.Presentation.Simulation
