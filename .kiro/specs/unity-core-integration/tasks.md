@@ -54,7 +54,7 @@ The port and its one adapter are introduced unused: `AgroAgents.Presentation` st
   - _Requirements: 1.4, 1.5, 1.10, 8.6, 9.1, 9.2, 10.1, 10.2, 11.1, 12.2_
   - _Design: Decision B1, Components and Interfaces, Data Models_
 
-- [ ] 9. Declare the port interfaces
+- [x] 9. Declare the port interfaces
   - In `AgroAgents.SimulationPort`, add `ISimulationSession` (`InitialSnapshot`, `RequestTick()`, `UpdateReceived` event, `IDisposable`), `ISimulationConnector` (`Connect(SessionRequest)`), and `ISimulationConnection` (`IsComplete`, `Failed`, `Error`, `Warnings`, `Session`, `Poll()`), exactly as specified in Components and Interfaces
   - _Requirements: 2.1, 2.2, 2.4, 2.9_
   - _Design: Decision B1, Components and Interfaces_
