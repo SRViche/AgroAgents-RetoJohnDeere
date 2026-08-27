@@ -147,7 +147,7 @@ Both types are introduced unused. `GridManager.GridToWorld` still exists and is 
 
 The session now ticks inside Unity but nothing renders from it; the legacy controllers still drive the visuals. Two simulations are deliberately alive in this group only, which is what proves the session ticks before anything is deleted.
 
-- [ ] 20. Implement `SiteKind` and `SiteMarker`
+- [x] 20. Implement `SiteKind` and `SiteMarker`
   - Create `Assets/Scripts/Authoring/SiteKind.cs` (`{ Refuel, Dump }`, presentation-only, no port or core counterpart to duplicate) and `Assets/Scripts/Authoring/SiteMarker.cs`
   - `SiteMarker` is a `MonoBehaviour` with the serialized fields from the `SiteMarker` field table: `kind`, `useExplicitCell`, `explicitCell` (`Vector2Int`)
   - `TryResolveCell(CoordinateMapper, out PortGridPosition)` resolves from the transform's world position through `TryToGrid` by default, or returns the authored explicit cell
