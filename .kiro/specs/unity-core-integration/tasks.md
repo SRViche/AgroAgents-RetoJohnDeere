@@ -164,7 +164,7 @@ The session now ticks inside Unity but nothing renders from it; the legacy contr
   - _Requirements: 5.1, 5.6, 9.3_
   - _Design: Decision D (previous-position snapshot, now port-mediated), Decision F_
 
-- [ ] 22. Implement `SimulationDriver`
+- [x] 22. Implement `SimulationDriver`
   - Create `Assets/Scripts/Simulation/SimulationDriver.cs`
   - `MonoBehaviour` with `[DisallowMultipleComponent]`, the public surface from Components and Interfaces, and the serialized fields from the `SimulationDriver` field table: `tickRate`, `tickBudget`, `speedMultiplier`, `startPaused`, `pauseKey`, `stepKey`
   - Owns the single `ISimulationSession`; nothing else in the project holds a reference to it, and nothing in this class ever names `SimulationWorld`. `Initialize` enables the component, which is authored disabled, and subscribes to `session.UpdateReceived`
@@ -173,7 +173,7 @@ The session now ticks inside Unity but nothing renders from it; the legacy contr
   - _Requirements: 2.4, 2.6, 2.7, 3.1, 3.2, 3.7, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 5.3_
   - _Design: Decision D_
 
-- [ ] 23. Implement `WorldBootstrapper`'s request-building and connect handshake
+- [x] 23. Implement `WorldBootstrapper`'s request-building and connect handshake
   - Create `Assets/Scripts/Authoring/WorldBootstrapper.cs`
   - `MonoBehaviour` with `[DefaultExecutionOrder(-1000)]` and `[DisallowMultipleComponent]`, plus every serialized field in the `WorldBootstrapper` field table with the exact `[Range]`, `[Min]`, `[Header]` and `[Tooltip]` attributes listed there, including `[SerializeReference] private ISimulationConnector connector`
   - No `FindObjectOfType` or `FindObjectsOfType` anywhere; all references are authored `[SerializeField]`/`[SerializeReference]` links
@@ -181,13 +181,13 @@ The session now ticks inside Unity but nothing renders from it; the legacy contr
   - _Requirements: 9.1, 9.2, 9.4, 10.1, 10.2, 10.3, 10.4, 11.1_
   - _Design: Decision G' (steps 1-4), Serialized Field Surface_
 
-- [ ] 24. Implement `WorldBootstrapper`'s polling loop and completion
+- [x] 24. Implement `WorldBootstrapper`'s polling loop and completion
   - Implement `Update()` as steps 5-7 of Decision G': call `connection.Poll()` every frame until `IsComplete`; on `connection.Failed`, hard-fail using `connection.Error` verbatim; relay any `connection.Warnings` as soft warnings; on success, read `connection.Session.InitialSnapshot`, call `simulationDriver.Initialize(session, mapper, bindings, gridView)`, and call `gridView.Initialize(snapshot, mapper)`
   - `InitializationFailed`, `Session`, and `Mapper` are the public surface from Components and Interfaces
   - _Requirements: 7.1, 9.5, 10.6, 11.5, 13.2_
   - _Design: Decision G' (steps 5-7)_
 
-- [ ] 25. Implement the hard-fail and soft-warning paths owned by `WorldBootstrapper`
+- [x] 25. Implement the hard-fail and soft-warning paths owned by `WorldBootstrapper`
   - Implement every `WorldBootstrapper`-attributed row of the Error Handling hard-failure table with the exact message shapes given: log error, set `InitializationFailed = true`, leave `Session` null, leave the driver and grid view disabled, and `return` without throwing
   - Implement the soft-warning rows owned by `WorldBootstrapper`: unmatched `AgentView` id, non-positive inspector value
   - Gate every warning that can fire per frame or per cell behind a `HashSet<string>` of already-logged keys
