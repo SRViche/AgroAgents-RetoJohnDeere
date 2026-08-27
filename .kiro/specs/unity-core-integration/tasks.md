@@ -110,13 +110,13 @@ The port and its one adapter are introduced unused: `AgroAgents.Presentation` st
 
 Both types are introduced unused. `GridManager.GridToWorld` still exists and is still the live path, so the project compiles unchanged.
 
-- [ ] 16. Add `AgroAgents.SimulationPort` as the presentation assembly's first reference
+- [x] 16. Add `AgroAgents.SimulationPort` as the presentation assembly's first reference
   - Modify `Assets/Scripts/AgroAgents.Presentation.asmdef`: `references` gains `AgroAgents.SimulationPort`
   - No file under `Assets/Scripts/` yet uses a port type; this task exists only to make the reference available for task 17
   - _Requirements: 1.4_
   - _Design: Migration Plan Step 3_
 
-- [ ] 17. Implement `CoordinateMapper`
+- [x] 17. Implement `CoordinateMapper`
   - Create `Assets/Scripts/Mapping/CoordinateMapper.cs` in namespace `AgroAgents.Presentation.Mapping`
   - Immutable plain C# class, not a `MonoBehaviour`, with the public surface given in Components and Interfaces: `GridOrigin`, `TileSize`, `Width`, `Height`, `ToWorld(PortGridPosition)`, `ToWorld(PortGridPosition, float height)`, `TryToGrid(Vector3, out PortGridPosition)`, `InBounds(PortGridPosition)`, `GridCentreWorld`
   - `ToWorld` is `GridOrigin + new Vector3(p.X * TileSize, 0f, p.Y * TileSize)`; `TryToGrid` rounds local x/z over `TileSize` with `Mathf.RoundToInt` and returns `false` without producing a position when the rounded cell falls outside `[0,Width) × [0,Height)`

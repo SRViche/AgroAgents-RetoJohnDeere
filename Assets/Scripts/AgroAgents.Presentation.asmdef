@@ -1,7 +1,9 @@
 {
   "name": "AgroAgents.Presentation",
   "rootNamespace": "AgroAgents.Presentation",
-  "references": [],
+  "references": [
+    "AgroAgents.SimulationPort"
+  ],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
