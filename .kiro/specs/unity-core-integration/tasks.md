@@ -30,14 +30,14 @@ Property numbers refer to the design's Correctness Properties section. Each prop
   - _Requirements: 1.1, 1.7_
   - _Design: Decision A_
 
-- [ ] 6. Create the presentation assembly definition with an empty reference list
+- [x] 6. Create the presentation assembly definition with an empty reference list
   - Create `Assets/Scripts/AgroAgents.Presentation.asmdef` exactly as specified in Decision B: `rootNamespace` `AgroAgents.Presentation`, `noEngineReferences: false`, and — unlike a direct-reference design — an **empty** `references` array
   - `AgroAgents.SimulationPort` does not exist yet (it is added in group 2), so the reference to it is deferred to group 3, once it does; this asmdef never references `HarvestingCore` at any point in the migration
   - All existing scripts under `Assets/Scripts/` now compile into this assembly; no script is modified in this group
   - _Requirements: 1.4, 1.7, 1.8, 13.3_
   - _Design: Decision B_
 
-- [ ] 7. Manually verify the compile-time engine barrier (one-off, not automated)
+- [x] 7. Manually verify the compile-time engine barrier (one-off, not automated)
   - Temporarily add `using UnityEngine;` and a `Vector3` field to any file under the core package root
   - Confirm the compiler reports `CS0246` for `Vector3` in the `HarvestingCore` assembly, then revert the edit
   - Automating this needs a scripted compile of a deliberately broken tree, which is out of scope
