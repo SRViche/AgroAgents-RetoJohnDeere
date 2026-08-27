@@ -1,10 +1,12 @@
+using AgroAgents.Presentation.Authoring;
+using AgroAgents.Presentation.Mapping;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 public class IsometricView : MonoBehaviour
 {
     [SerializeField] private Vector3 targetPoint = Vector3.zero;
-    [SerializeField] private GridManager gridManager;
+    [SerializeField] private WorldBootstrapper worldBootstrapper;
 
     [SerializeField] private float distance = 200f;
     [SerializeField] private float yaw = 45f;
@@ -13,17 +15,19 @@ public class IsometricView : MonoBehaviour
     [SerializeField] private bool useOrthographic = true;
     [SerializeField] private float padding = 2f;
 
-    private void Start()
-    {
-        Vector3 focus = targetPoint;
+    private bool _initialized;
 
-        if (gridManager != null)
-        {
-            focus = new Vector3(
-                gridManager.Width * gridManager.TileSize * 0.5f,
-                0f,
-                gridManager.Height * gridManager.TileSize * 0.5f);
-        }
+    private void LateUpdate()
+    {
+        if (_initialized) return;
+        if (worldBootstrapper == null) return;
+
+        CoordinateMapper mapper = worldBootstrapper.Mapper;
+        if (mapper == null) return;
+
+        _initialized = true;
+
+        Vector3 focus = mapper.GridCentreWorld;
 
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
         transform.rotation = rotation;
@@ -33,11 +37,8 @@ public class IsometricView : MonoBehaviour
         if (useOrthographic && cam != null)
         {
             cam.orthographic = true;
-            if (gridManager != null)
-            {
-                float halfExtent = Mathf.Max(gridManager.Width, gridManager.Height) * gridManager.TileSize * 0.5f;
-                cam.orthographicSize = halfExtent + padding;
-            }
+            float halfExtent = Mathf.Max(mapper.Width, mapper.Height) * mapper.TileSize * 0.5f;
+            cam.orthographicSize = halfExtent + padding;
         }
     }
 }

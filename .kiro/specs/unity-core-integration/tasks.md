@@ -198,7 +198,7 @@ The session now ticks inside Unity but nothing renders from it; the legacy contr
 
 The largest group. `TileData` and `GridManager` are mutually dependent and every legacy controller reaches into both, so the replacement and the deletions land together to keep Requirement 13.4.
 
-- [ ] 26. Implement `CellVisual` and `CellVisualMap`
+- [x] 26. Implement `CellVisual` and `CellVisualMap`
   - Create `Assets/Scripts/Views/CellVisual.cs` and `Assets/Scripts/Views/CellVisualMap.cs` in namespace `AgroAgents.Presentation.Views`
   - `CellVisualMap` is a `ScriptableObject` with `[CreateAssetMenu]`, the serialized fields from its field table, `TryGet(PortCellState, out CellVisual)` and a `Fallback`
   - Populate the four-entry default from the `PortCellState` → visual mapping table: `Empty`, `Crop`, `Blocked`, `Harvested`, each with a distinct floor material slot
@@ -206,7 +206,7 @@ The largest group. `TileData` and `GridManager` are mutually dependent and every
   - _Requirements: 7.6, 7.8, 12.2_
   - _Design: Decision E, Data Models_
 
-- [ ] 27. Implement `GridView`
+- [x] 27. Implement `GridView`
   - Create `Assets/Scripts/Views/GridView.cs`
   - `MonoBehaviour` with `[DisallowMultipleComponent]`, the public surface from Components and Interfaces, and the serialized fields from the `GridView` field table. `width`, `height`, `useRandomSeed`, `customSeed`, `obstacleChance` and `cropChance` are absent by requirement; dimensions come from `WorldSnapshot.Width`/`Height`
   - `Initialize(WorldSnapshot, CoordinateMapper)` instantiates one floor prefab per cell in `snapshot.Cells` positioned through the mapper, applies the mapped floor material, instantiates content prefabs for `Crop` and `Blocked`, and renders the refuel and dump marker prefabs at every `RefuelStations` and `DumpSites` position
@@ -216,7 +216,7 @@ The largest group. `TileData` and `GridManager` are mutually dependent and every
   - _Requirements: 2.1, 2.3, 2.5, 7.1, 7.2, 7.3, 7.4, 7.5, 7.7, 7.8, 10.6, 12.3_
   - _Design: Decision E_
 
-- [ ] 28. Delete `GridManager` and `TileData`, and strip their call sites
+- [x] 28. Delete `GridManager` and `TileData`, and strip their call sites
   - Delete `Assets/Scripts/GridScripts/GridManager.cs` and `Assets/Scripts/GridScripts/TileData.cs`, which removes the `TileState` and `TileContent` enums with them
   - Modify `Assets/Scripts/CameraScripts/IsometricView.cs`: swap the `gridManager` field for `WorldBootstrapper`/`CoordinateMapper` and read `Width`, `Height`, `TileSize` and `GridCentreWorld` from the mapper. Otherwise unchanged
   - Modify `AgentController.cs`, `HarvesterController.cs`, `TractorController.cs` and `FieldManager.cs`: remove every `GridManager` and `TileData` call site, which reduces them to inert shells holding only their serialized fields. They are deleted wholesale in group 6
