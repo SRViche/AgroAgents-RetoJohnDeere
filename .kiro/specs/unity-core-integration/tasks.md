@@ -123,7 +123,7 @@ Both types are introduced unused. `GridManager.GridToWorld` still exists and is 
   - _Requirements: 6.1, 6.2, 6.5, 6.6_
   - _Design: Decision C (CoordinateMapper)_
 
-- [ ] 18. Implement `TickPlan` and `TickAccumulator`
+- [x] 18. Implement `TickPlan` and `TickAccumulator`
   - Create `Assets/Scripts/Simulation/TickPlan.cs` and `Assets/Scripts/Simulation/TickAccumulator.cs` in namespace `AgroAgents.Presentation.Simulation`
   - `TickPlan` is a readonly struct carrying `TickCount`, `InterpolationAlpha`, `Clamped`
   - `TickAccumulator` is a plain C# class with the public surface given in Components and Interfaces. `TickRate`, `TickBudget` and `SpeedMultiplier` setters reject non-positive (and for budget, sub-1) values and retain the previous value rather than clamping
