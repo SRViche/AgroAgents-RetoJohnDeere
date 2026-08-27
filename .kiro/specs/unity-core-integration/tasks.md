@@ -11,15 +11,10 @@ Property numbers refer to the design's Correctness Properties section. Each prop
   - _Requirements: 1.1_
   - _Design: Decision A_
 
-- [ ] 2. Redirect the core's MSBuild output away from the package root
+- [x] 2. Redirect the core's MSBuild output away from the package root
   - Modify `External/AgenticModel/src/HarvestingCore/HarvestingCore.csproj`: add the `BaseOutputPath` and `BaseIntermediateOutputPath` property group from Decision A, pointing at `../../artifacts/`
   - Add `artifacts/` to the core repo's `.gitignore`
   - Verify `dotnet build HarvestingCore.sln` still succeeds from the core repo root
-  - _Requirements: 1.1_
-  - _Design: Decision A_
-
-- [ ] 3. Delete the empty `External/AgenticModel/src/HarvestingCore/__tests__/` folder
-  - Nothing under the package root may be test source; core tests live in a sibling project (task 11)
   - _Requirements: 1.1_
   - _Design: Decision A_
 
