@@ -59,7 +59,7 @@ The port and its one adapter are introduced unused: `AgroAgents.Presentation` st
   - _Requirements: 2.1, 2.2, 2.4, 2.9_
   - _Design: Decision B1, Components and Interfaces_
 
-- [-] 10. Create the `AgroAgents.InMemoryAdapter` assembly and its connector/session
+- [x] 10. Create the `AgroAgents.InMemoryAdapter` assembly and its connector/session
   - Create `Assets/Scripts/Adapters/InMemory/AgroAgents.InMemoryAdapter.asmdef` exactly as specified in Decision B1: `references` containing `AgroAgents.SimulationPort` and `HarvestingCore`, `autoReferenced: true`, `noEngineReferences: false`
   - Implement `[Serializable] InMemorySimulationConnector : ISimulationConnector` and `InMemorySimulationSession : ISimulationSession`, wrapping one `SimulationWorld`. `RequestTick()` snapshots cell states, calls `SimulationWorld.Tick()`, diffs cell states for `WorldUpdate.ChangedCells`, maps agents via `MapAgents`, and raises `UpdateReceived` before returning (Decision D, "in-memory: synchronous")
   - Implement the mapping functions (`MapCellState`, `MapStateId`, `MapAgentRole`, `MapAgents`, and the reverse `PortGridPosition` → `GridPosition` direction) as exhaustive `switch` expressions with no default arm, entirely inside this assembly. Nothing upstream of the port sees a `HarvestingCore` type
