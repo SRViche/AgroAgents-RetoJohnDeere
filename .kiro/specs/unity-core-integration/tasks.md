@@ -18,13 +18,13 @@ Property numbers refer to the design's Correctness Properties section. Each prop
   - _Requirements: 1.1_
   - _Design: Decision A_
 
-- [ ] 4. Create the core UPM package manifest and assembly definition
+- [x] 4. Create the core UPM package manifest and assembly definition
   - Create `External/AgenticModel/src/HarvestingCore/package.json` with the contents given in Decision A
   - Create `External/AgenticModel/src/HarvestingCore/HarvestingCore.asmdef` exactly as specified in Decision B: `noEngineReferences: true`, `autoReferenced: false`, empty `references`, `overrideReferences: true`, `rootNamespace` `HarvestingCore`
   - _Requirements: 1.1, 1.2, 1.5, 1.6_
   - _Design: Decision A, Decision B_
 
-- [ ] 5. Register the core package with Unity
+- [x] 5. Register the core package with Unity
   - Modify `Packages/manifest.json`: add `"com.agroagents.harvestingcore": "file:../External/AgenticModel/src/HarvestingCore"`
   - Confirm Unity imports the package and compiles `HarvestingCore` as its own assembly
   - _Requirements: 1.1, 1.7_
