@@ -155,7 +155,7 @@ The session now ticks inside Unity but nothing renders from it; the legacy contr
   - _Requirements: 10.1, 10.2, 10.3_
   - _Design: Decision H, Serialized Field Surface_
 
-- [ ] 21. Implement `AgentBinding` and `AgentBindingRegistry`
+- [x] 21. Implement `AgentBinding` and `AgentBindingRegistry`
   - Create `Assets/Scripts/Simulation/AgentBinding.cs` and `Assets/Scripts/Simulation/AgentBindingRegistry.cs`
   - `AgentBinding` holds `AgentId`, the `AgentView`, `PreviousSnapshot`/`CurrentSnapshot` (`PortAgentSnapshot`, internal setters), and `PreviousPosition`/`CurrentPosition` convenience properties reading from those snapshots
   - `AgentBindingRegistry` exposes `Bindings` in ordinal-id order, `TryGet`, `Add`, and `ApplyUpdate(WorldUpdate)` which shifts each binding's `CurrentSnapshot` into `PreviousSnapshot` and installs the matching entry of `update.Agents` as the new `CurrentSnapshot`
