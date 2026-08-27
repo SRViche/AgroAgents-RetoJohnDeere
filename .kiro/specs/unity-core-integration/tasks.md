@@ -66,7 +66,7 @@ The port and its one adapter are introduced unused: `AgroAgents.Presentation` st
   - _Requirements: 1.9, 2.1, 2.2, 2.4, 8.6, 9.8, 12.2_
   - _Design: Decision B1, Components and Interfaces (InMemorySimulationConnector / InMemorySimulationSession), Decision E_
 
-- [ ] 11. Implement `InMemorySimulationConnection.TryBuildWorld`
+- [x] 11. Implement `InMemorySimulationConnection.TryBuildWorld`
   - Implement `internal sealed class InMemorySimulationConnection : ISimulationConnection` and its `internal static SimulationWorld TryBuildWorld(SessionRequest request, out string error, out List<string> warnings)`, Unity-free and testable in the `dotnet` host
   - `Poll()` completes synchronously on its first call: build `SimulationConfig` inside `try/catch (ArgumentOutOfRangeException)` (Req 11.3); build `IRandomSource` as `DeterministicRandom(seed)` (Req 11.2); build the `WorldModel` (`AuthoredGridText == null` → `GenerateGrid()` exactly once, Req 11.4; otherwise → `WorldModel.Parse`, no `GenerateGrid()` call, Req 11.7); validate each agent's start cell against the now-known grid, naming id and position on failure (Req 9.7); construct and register agents in sorted order (Req 9.1, 9.2); call `RedistributeAreas()` exactly once (Req 9.8); wrap the result in an `InMemorySimulationSession`
   - Widen the `SessionRequest`'s `double` density/factor fields into the `SimulationConfig` constructor's own `double` parameters

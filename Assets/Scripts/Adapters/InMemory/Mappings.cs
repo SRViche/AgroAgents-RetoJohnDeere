@@ -41,6 +41,13 @@ namespace AgroAgents.InMemoryAdapter
             AgentRole.Tractor => PortAgentRole.Tractor,
         };
 
+        /// <summary>Reverse direction: a port role back to <see cref="AgentRole"/>.</summary>
+        internal static AgentRole MapPortAgentRole(PortAgentRole role) => role switch
+        {
+            PortAgentRole.Harvester => AgentRole.Harvester,
+            PortAgentRole.Tractor => AgentRole.Tractor,
+        };
+
         /// <summary>Forward direction: <see cref="GridPosition"/> to its port mirror.</summary>
         internal static PortGridPosition MapPosition(GridPosition position) =>
             new PortGridPosition(position.X, position.Y);

@@ -15,11 +15,7 @@ namespace AgroAgents.InMemoryAdapter
     {
         public ISimulationConnection Connect(SessionRequest request)
         {
-            // InMemorySimulationConnection (ISimulationConnection) and its
-            // world-building logic are added in a later task; wiring it in here
-            // is out of scope until that type exists.
-            throw new NotImplementedException(
-                "InMemorySimulationConnection is implemented in a later task.");
+            return new InMemorySimulationConnection(request);
         }
     }
 }
