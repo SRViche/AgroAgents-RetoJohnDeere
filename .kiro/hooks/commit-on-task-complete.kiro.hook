@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Commit on Task Completion",
+  "description": "After a spec task is marked completed, commit the work with a conventional-commit header and a bulleted body of changes. Only fires a commit when a top-level task and all of its required sub-tasks are done.",
+  "version": "1",
+  "when": {
+    "type": "postTaskExecution"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A spec task was just marked completed. Commit the work for it, but only once the whole task is finished.\n\n1. Read the spec's `tasks.md` and locate the task that was just completed.\n2. Decide whether to commit:\n   - If the completed task is a sub-task and its parent task still has incomplete required sub-tasks (`- [ ]` without a `*` marker), STOP. Do not commit, do not report anything.\n   - If the completed task is a top-level task, or the last required sub-task of its parent, continue.\n3. Run `git status --porcelain` and `git diff --stat`. If there is nothing to commit, STOP silently.\n4. Stage only the files that belong to this task plus the updated `tasks.md`. Never use `git add .`. Skip anything that looks like a secret (`.env`, `credentials.json`, key files, tokens) and mention it instead of staging it. Skip build output (`bin/`, `obj/`) — if it is not already ignored, say so rather than committing it.\n5. Commit with a conventional-commit message. Header format: `<prefix>: <task title in imperative mood>`, under 70 characters, no trailing period. Pick the prefix from the actual change:\n   - `feat` new behaviour or capability\n   - `fix` corrects broken behaviour\n   - `refactor` restructuring with no behaviour change\n   - `test` test-only additions\n   - `chore` scaffolding, config, tooling, dependencies\n   - `docs` documentation only\n   Body: a blank line, then one `- ` bullet per meaningful change, each naming the file or component it touched. Reference the task id and the requirement ids the task cites, e.g. `Task 1.2, requirements 18.1, 19.1`.\n   Write the message to a temp file and pass it with `git commit -F <file>`, then delete the temp file, so multi-line bodies survive intact.\n6. Do not push. Do not amend. Do not create a branch.\n7. Report the commit in one line: the short hash and the header."
+  }
+}
