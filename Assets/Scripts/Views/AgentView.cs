@@ -58,7 +58,7 @@ namespace AgroAgents.Presentation.Views
 
         [Range(-180f, 180f)]
         [Tooltip("Yaw correction for models whose forward axis is not +Z. Preserved from the deleted AgentController.")]
-        [SerializeField] private float forwardOffsetY;
+        [SerializeField] private float forwardOffsetY = -90f;
 
         [Header("Readouts")]
         [Tooltip("Optional. Shows Fuel and Load / MaxLoad read from the bound AgentBinding's PortAgentSnapshot.")]
@@ -144,7 +144,9 @@ namespace AgroAgents.Presentation.Views
             }
             else
             {
-                transform.position = Vector3.Lerp(previousWorld, currentWorld, interpolationAlpha);
+                Vector3 interpolated = Vector3.Lerp(previousWorld, currentWorld, interpolationAlpha);
+                interpolated.y = transform.position.y; // preserve existing Y (physics/terrain driven)
+                transform.position = interpolated;
             }
 
             // Rotation — tick-to-tick direction, not frame-to-frame delta.
