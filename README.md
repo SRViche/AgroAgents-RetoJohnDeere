@@ -1,5 +1,7 @@
 # AgroAgents — Autonomous Harvesting Simulation (Unity Presentation)
 
+![AgroAgents Banner](img/banner.png)
+
 A multi-agent cotton-harvesting simulation visualized in Unity. The Unity project is a **pure view** over the engine-agnostic `HarvestingCore` library — it renders the simulation but owns no simulation logic.
 
 ## Table of Contents
