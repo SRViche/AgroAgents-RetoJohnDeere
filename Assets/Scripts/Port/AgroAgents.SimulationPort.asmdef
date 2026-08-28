@@ -1,0 +1,12 @@
+{
+  "name": "AgroAgents.SimulationPort",
+  "rootNamespace": "AgroAgents.SimulationPort",
+  "references": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}

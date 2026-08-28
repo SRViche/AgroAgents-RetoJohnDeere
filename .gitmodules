@@ -1,0 +1,3 @@
+[submodule "External/AgenticModel"]
+	path = External/AgenticModel
+	url = https://github.com/WebAxol/autonomous-harvesting-core.git
