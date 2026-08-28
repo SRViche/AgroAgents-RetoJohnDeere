@@ -2,7 +2,8 @@
   "name": "AgroAgents.Presentation",
   "rootNamespace": "AgroAgents.Presentation",
   "references": [
-    "AgroAgents.SimulationPort"
+    "AgroAgents.SimulationPort",
+    "Unity.InputSystem"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

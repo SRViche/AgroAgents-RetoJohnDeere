@@ -21,9 +21,8 @@ namespace AgroAgents.Presentation.Authoring
     {
         // --- Connection ---
         [Header("Connection")]
-        [SerializeReference]
         [Tooltip("Which simulation implementation to open a session against. Only InMemorySimulationConnector ships in this release; the field exists so a future connector needs no code change here.")]
-        private ISimulationConnector connector;
+        [SerializeReference] private ISimulationConnector connector;
 
         // --- Wiring ---
         [Header("Wiring")]

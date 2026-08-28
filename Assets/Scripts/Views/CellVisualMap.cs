@@ -8,7 +8,7 @@ namespace AgroAgents.Presentation.Views
     /// Shared across all cells via a single asset reference on <see cref="GridView"/>.
     /// </summary>
     [CreateAssetMenu(menuName = "AgroAgents/Cell Visual Map")]
-    public sealed class CellVisualMap : ScriptableObject
+    public sealed class CellVisualMap : MonoBehaviour
     {
         [Tooltip("One entry per PortCellState. Exactly four.")]
         [SerializeField] private CellVisual[] entries = new CellVisual[]

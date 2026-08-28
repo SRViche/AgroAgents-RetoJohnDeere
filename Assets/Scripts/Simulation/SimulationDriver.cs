@@ -3,6 +3,7 @@ using AgroAgents.Presentation.Mapping;
 using AgroAgents.Presentation.Views;
 using AgroAgents.SimulationPort;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace AgroAgents.Presentation.Simulation
 {
@@ -31,10 +32,10 @@ namespace AgroAgents.Presentation.Simulation
         [SerializeField] private bool startPaused;
 
         [Header("Debug controls")]
-        [SerializeField] private KeyCode pauseKey = KeyCode.P;
+        [SerializeField] private Key pauseKey = Key.P;
 
         [Tooltip("Advances exactly one tick while paused.")]
-        [SerializeField] private KeyCode stepKey = KeyCode.Period;
+        [SerializeField] private Key stepKey = Key.Period;
 
         private TickAccumulator _accumulator;
         private GridView _gridView;
@@ -109,14 +110,18 @@ namespace AgroAgents.Presentation.Simulation
             }
 
             // Debug controls
-            if (Input.GetKeyDown(pauseKey))
+            Keyboard kb = Keyboard.current;
+            if (kb != null)
             {
-                IsPaused = !IsPaused;
-            }
+                if (kb[pauseKey].wasPressedThisFrame)
+                {
+                    IsPaused = !IsPaused;
+                }
 
-            if (Input.GetKeyDown(stepKey))
-            {
-                StepOneTick();
+                if (kb[stepKey].wasPressedThisFrame)
+                {
+                    StepOneTick();
+                }
             }
 
             float dt = Time.unscaledDeltaTime;
