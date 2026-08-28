@@ -3337,6 +3337,63 @@ MonoBehaviour:
     ContentPrefab: {fileID: 0}
     ContentVariants: []
   fallbackFloorMaterial: {fileID: 2100000, guid: 6b3835adac43746408f87873166ed6f4, type: 2}
+--- !u!1001 &729691579
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -39.03526
+      objectReference: {fileID: 0}
+    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.00948
+      objectReference: {fileID: 0}
+    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 156.04788
+      objectReference: {fileID: 0}
+    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6223126761824341332, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
+      propertyPath: m_Name
+      value: john deere CP770_MFEV
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
 --- !u!4 &747619378 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1b118b1b3a41b234a8e0dc80ea5eb892, type: 3}
@@ -3464,7 +3521,7 @@ MonoBehaviour:
   simulationDriver: {fileID: 861409436}
   gridView: {fileID: 208462734}
   agentViews:
-  - {fileID: 0}
+  - {fileID: 1948081964}
   siteMarkers:
   - {fileID: 0}
   gridOrigin: {fileID: 936016733}
@@ -4914,9 +4971,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 474792705}
-  - {fileID: 1598177708}
-  - {fileID: 1753978176}
-  - {fileID: 2046344987}
   - {fileID: 1658960667}
   - {fileID: 44929275}
   - {fileID: 1721385773}
@@ -6021,19 +6075,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1153398420}
+    m_TransformParent: {fileID: 1863616897}
     m_Modifications:
     - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -48.44801
+      value: -2.0910797
       objectReference: {fileID: 0}
     - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.003925022
+      value: 0.00040502218
       objectReference: {fileID: 0}
     - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 27.708557
+      value: -4.8074036
       objectReference: {fileID: 0}
     - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6077,12 +6131,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6223126761824341332, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
       propertyPath: m_Name
-      value: john deere CP770_MFEV
+      value: Harvester
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6223126761824341332, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1948081964}
   m_SourcePrefab: {fileID: 100100000, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
 --- !u!4 &1598177708 stripped
 Transform:
@@ -6839,80 +6896,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c36f53ebe97fa2146bf084b830046c5d, type: 3}
---- !u!1001 &1753978175
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1153398420}
-    m_Modifications:
-    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -48.25554
-      objectReference: {fileID: 0}
-    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0018795695
-      objectReference: {fileID: 0}
-    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 48.82927
-      objectReference: {fileID: 0}
-    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9973959
-      objectReference: {fileID: 0}
-    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.072121926
-      objectReference: {fileID: 0}
-    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -8.272
-      objectReference: {fileID: 0}
-    - target: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238954412726775448, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-      propertyPath: maxLoad
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238954412726775448, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-      propertyPath: moveSpeed
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238954412726775448, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-      propertyPath: forwardOffsetY
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 6223126761824341332, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-      propertyPath: m_Name
-      value: john deere CP770_MFEV (1)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
---- !u!4 &1753978176 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2131220024313198121, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
-  m_PrefabInstance: {fileID: 1753978175}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1789955121 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c36f53ebe97fa2146bf084b830046c5d, type: 3}
@@ -7241,6 +7224,39 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c36f53ebe97fa2146bf084b830046c5d, type: 3}
+--- !u!1 &1863616896
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1863616897}
+  m_Layer: 0
+  m_Name: Agents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1863616897
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863616896}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -33.08188, y: 0.0035, z: 171.60248}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1598177708}
+  - {fileID: 2046344987}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1893608897
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7462,6 +7478,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b118b1b3a41b234a8e0dc80ea5eb892, type: 3}
+--- !u!1 &1948081962 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6223126761824341332, guid: b4f3d1c4642d4b645babff3554a2179c, type: 3}
+  m_PrefabInstance: {fileID: 1598177707}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1948081964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948081962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f65f1ad58b4ee82fb8755471c599693f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: AgroAgents.Presentation::AgroAgents.Presentation.Views.AgentView
+  agentId: 1
+  role: 0
+  startCell: {x: 0, y: 0}
+  overrideCapacities: 0
+  maxLoad: 100
+  maxFuel: 1000
+  fuelConsumption: 1
+  stateVisualMap: {fileID: 0}
+  bodyRenderer: {fileID: 0}
+  badgeAnchor: {fileID: 0}
+  heightOffset: 0
+  rotationSpeed: 720
+  forwardOffsetY: 0
+  statusLabel: {fileID: 0}
 --- !u!1001 &1953836023
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7693,7 +7740,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1153398420}
+    m_TransformParent: {fileID: 1863616897}
     m_Modifications:
     - target: {fileID: 960159880969836502, guid: 435342ad521354d2f93bd73829353184, type: 3}
       propertyPath: m_LocalScale.x
@@ -7705,15 +7752,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 960159880969836502, guid: 435342ad521354d2f93bd73829353184, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -46.575417
+      value: -0.21848679
       objectReference: {fileID: 0}
     - target: {fileID: 960159880969836502, guid: 435342ad521354d2f93bd73829353184, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.4995899
+      value: -1.5031099
       objectReference: {fileID: 0}
     - target: {fileID: 960159880969836502, guid: 435342ad521354d2f93bd73829353184, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 67.410614
+      value: 34.894653
       objectReference: {fileID: 0}
     - target: {fileID: 960159880969836502, guid: 435342ad521354d2f93bd73829353184, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8136,5 +8183,7 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 936016733}
   - {fileID: 416755404}
-  - {fileID: 1153398420}
   - {fileID: 1462871750}
+  - {fileID: 1153398420}
+  - {fileID: 1863616897}
+  - {fileID: 729691579}
