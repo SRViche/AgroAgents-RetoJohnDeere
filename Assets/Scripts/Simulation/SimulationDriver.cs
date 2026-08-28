@@ -163,6 +163,17 @@ namespace AgroAgents.Presentation.Simulation
             _gridView.OnUpdateReceived(update);
             DischargedTotal = update.DischargedTotal;
             _lastHalted = update.IsHalted;
+
+            // --- Diagnostic: log every agent's state, position, fuel, and load each tick ---
+            var sb = new System.Text.StringBuilder();
+            sb.Append($"[Tick {update.TickIndex}] Halted={update.IsHalted} Discharged={update.DischargedTotal}\n");
+            for (int i = 0; i < update.Agents.Count; i++)
+            {
+                var a = update.Agents[i];
+                sb.Append($"  [{a.Role}] {a.Id} | pos=({a.Position.X},{a.Position.Y}) state={a.CurrentState} fuel={a.Fuel} load={a.Load}/{a.MaxLoad}\n");
+            }
+            Debug.Log(sb.ToString());
+            // --- End diagnostic ---
         }
 
         private void OnValidate()
