@@ -47,15 +47,15 @@ test.
     - Add static factory constructors: `ForStateResponse(WsSimulationSnapshot)`, `ForTickResponse(WsSimulationSnapshot)`, `ForError(string code, string msg)`, `ForParseError(string msg)`, `ForUnknownType()`, `ForDisconnected(string reason)`
     - _Requirements: 7.1, 7.2, 7.3_
 
-- [ ] 3. Implement `WebSocketMessageParser` (Unity-free)
-  - [ ] 3.1 Create `WebSocketMessageParser.cs` with private DTOs and `Parse(string json)` entry point
+- [x] 3. Implement `WebSocketMessageParser` (Unity-free)
+  - [x] 3.1 Create `WebSocketMessageParser.cs` with private DTOs and `Parse(string json)` entry point
     - Create `Assets/Scripts/Adapters/WebSocket/WebSocketMessageParser.cs`
     - No `using UnityEngine` — this file must compile as `netstandard2.1`
     - Define private DTOs: `WsSimulationSnapshot`, `WsAgentSnapshot` (with four nullable optional fields), `WsCellSnapshot`
     - Implement `internal static ServerMessage Parse(string json)`: use `JsonDocument` to peek `"type"`, then deserialize into the matching DTO; return `ParseError` for `JsonException`; return `UnknownType` for unrecognised type strings; never throw
     - _Requirements: 7.1, 7.2, 7.3, 9.4_
 
-  - [ ] 3.2 Create `AgenticModel/tests/HarvestingCore.WebSocketAdapter.Tests/` dotnet test project
+  - [x] 3.2 Create `AgenticModel/tests/HarvestingCore.WebSocketAdapter.Tests/` dotnet test project
     - Create `AgenticModel/tests/HarvestingCore.WebSocketAdapter.Tests/HarvestingCore.WebSocketAdapter.Tests.csproj`
     - Target `net10.0`, reference `xunit`, `FsCheck.Xunit` (same versions as `HarvestingCore.Transport.Tests`), and `Microsoft.NET.Test.Sdk`
     - Add the `WebSocketMessageParser.cs` file as a shared compile item (no Unity project reference) so it can be exercised without a Unity process
