@@ -1,0 +1,14 @@
+{
+  "name": "AgroAgents.WebSocketAdapter",
+  "rootNamespace": "AgroAgents.WebSocketAdapter",
+  "references": [
+    "AgroAgents.SimulationPort"
+  ],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
