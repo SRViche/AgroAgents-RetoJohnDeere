@@ -72,8 +72,8 @@ test.
     - **Property 21: Missing optional fields fall back to defaults** — generate JSON `WsAgentSnapshot` objects that omit `maxLoad`, `pathInvalidatedThisTick`, `meetingPointX`, `meetingPointY` in various combinations; assert `MaxLoad = 0`, `PathInvalidatedThisTick = false`, `MeetingPoint = null`
     - **Validates: Requirements 7.7, 7.8, 10.5**
 
-- [ ] 4. Implement `WebSocketSimulationConnector`
-  - [ ] 4.1 Create `WebSocketSimulationConnector.cs`
+- [x] 4. Implement `WebSocketSimulationConnector`
+  - [x] 4.1 Create `WebSocketSimulationConnector.cs`
     - Create `Assets/Scripts/Adapters/WebSocket/WebSocketSimulationConnector.cs`
     - Decorate with `[Serializable]`, implement `ISimulationConnector`
     - Add serialized fields: `[SerializeField] string host = "localhost"`, `[SerializeField] int port = 8765`, `[SerializeField] float connectionTimeoutSeconds = 10f`, `[SerializeField] bool reconnectOnDrop = false`
