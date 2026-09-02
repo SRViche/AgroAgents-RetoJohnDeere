@@ -11,8 +11,8 @@ test.
 
 ## Tasks
 
-- [ ] 1. Extend AgenticModel server protocol (unblocks everything else)
-  - [ ] 1.1 Add four new fields to `AgentSnapshot`
+- [x] 1. Extend AgenticModel server protocol (unblocks everything else)
+  - [x] 1.1 Add four new fields to `AgentSnapshot`
     - Open `AgenticModel/src/HarvestingCore.Transport/Dto/AgentSnapshot.cs`
     - Add `[JsonPropertyName("maxLoad")] public int MaxLoad { get; set; }`
     - Add `[JsonPropertyName("pathInvalidatedThisTick")] public bool PathInvalidatedThisTick { get; set; }`
@@ -20,7 +20,7 @@ test.
     - Add `[JsonPropertyName("meetingPointY")] public int? MeetingPointY { get; set; }`
     - _Requirements: 10.1_
 
-  - [ ] 1.2 Populate new fields in `SimulationHostAdapter.GetSnapshot()`
+  - [x] 1.2 Populate new fields in `SimulationHostAdapter.GetSnapshot()`
     - Open `AgenticModel/src/HarvestingCore.Host/SimulationHostAdapter.cs`
     - In the `foreach (Agent agent …)` loop, set `MaxLoad`, `PathInvalidatedThisTick`, `MeetingPointX`, `MeetingPointY` from the corresponding `Agent` properties
     - When `Agent.MeetingPoint` is null, both coordinate fields must serialize as JSON `null`
@@ -34,13 +34,13 @@ test.
     - **Validates: Requirements 10.2**
     - Use FsCheck.Xunit (already in the `.csproj`); minimum 100 iterations per property
 
-- [ ] 2. Create assembly definition and `ServerMessage` discriminated union
-  - [ ] 2.1 Create `AgroAgents.WebSocketAdapter.asmdef`
+- [x] 2. Create assembly definition and `ServerMessage` discriminated union
+  - [x] 2.1 Create `AgroAgents.WebSocketAdapter.asmdef`
     - Create `Assets/Scripts/Adapters/WebSocket/AgroAgents.WebSocketAdapter.asmdef`
     - Set `name = "AgroAgents.WebSocketAdapter"`, `references = ["AgroAgents.SimulationPort"]`, `noEngineReferences = false`
     - _Requirements: 9.1, 9.2, 9.3_
 
-  - [ ] 2.2 Create `ServerMessage.cs` with discriminated union and `ServerMessageKind` enum
+  - [x] 2.2 Create `ServerMessage.cs` with discriminated union and `ServerMessageKind` enum
     - Create `Assets/Scripts/Adapters/WebSocket/ServerMessage.cs`
     - Define `internal enum ServerMessageKind { StateResponse, TickResponse, ErrorResponse, ParseError, UnknownType, Disconnected }`
     - Define `internal sealed class ServerMessage` with read-only properties: `Kind`, `SnapshotData` (`WsSimulationSnapshot?`), `ErrorCode`, `ErrorMessage`, `ParseErrorMessage`, `CloseReason`
