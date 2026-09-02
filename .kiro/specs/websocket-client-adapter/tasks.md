@@ -80,8 +80,8 @@ test.
     - Implement `Connect(SessionRequest request)`: construct and return `new WebSocketSimulationConnection(host, port, connectionTimeoutSeconds, reconnectOnDrop, request)` — no socket opened, no task started
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
-- [ ] 5. Implement `WebSocketSimulationConnection` (state machine + receive loop)
-  - [ ] 5.1 Create `WebSocketSimulationConnection.cs`
+- [x] 5. Implement `WebSocketSimulationConnection` (state machine + receive loop)
+  - [x] 5.1 Create `WebSocketSimulationConnection.cs`
     - Create `Assets/Scripts/Adapters/WebSocket/WebSocketSimulationConnection.cs`
     - Implement `ISimulationConnection` and `IDisposable`
     - Own: `ClientWebSocket _socket`, `ConcurrentQueue<ServerMessage> _queue`, `Task _connectTask`, `Task _receiveLoop`, `CancellationTokenSource _cts`, `float _timeoutAt`, `ConnectionState _state` (Idle/Connecting/Handshaking/Complete/Failed enum)
