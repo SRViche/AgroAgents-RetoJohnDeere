@@ -110,8 +110,8 @@ test.
 - [ ] 6. Checkpoint — ensure server-side and parser tests pass
   - Ensure all tests pass in `AgenticModel/tests/HarvestingCore.Transport.Tests/` and `AgenticModel/tests/HarvestingCore.WebSocketAdapter.Tests/`. Ask the user if any questions arise.
 
-- [ ] 7. Implement `WebSocketSimulationSession` (CellDiffCache + tick loop)
-  - [ ] 7.1 Create `WebSocketSimulationSession.cs`
+- [-] 7. Implement `WebSocketSimulationSession` (CellDiffCache + tick loop)
+  - [x] 7.1 Create `WebSocketSimulationSession.cs`
     - Create `Assets/Scripts/Adapters/WebSocket/WebSocketSimulationSession.cs`
     - Implement `ISimulationSession` and `IDisposable`
     - Constructor takes `WsSimulationSnapshot initialData`, `ClientWebSocket socket`, `CancellationTokenSource cts`, `ConcurrentQueue<ServerMessage> queue`
