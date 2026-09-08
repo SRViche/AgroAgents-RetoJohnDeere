@@ -154,8 +154,11 @@ namespace AgroAgents.WebSocketAdapter
                 return;
             }
 
-            // ConnectAsync succeeded — send state_request and start receive loop.
-            SendStateRequest();
+            // ConnectAsync succeeded — the client authors the world: send the full
+            // init_request built from the SessionRequest, then start the receive loop.
+            // The server builds its world from this payload and replies with a
+            // state_response, which completes the handshake.
+            SendInitRequest();
             _receiveLoop = ReceiveLoopAsync();
             _state = ConnectionState.Handshaking;
         }
@@ -221,16 +224,15 @@ namespace AgroAgents.WebSocketAdapter
             // Session must remain null when Failed (invariant).
         }
 
-        private void SendStateRequest()
+        private void SendInitRequest()
         {
-            // Build and send the state_request JSON frame.
-            // We fire-and-forget using ConfigureAwait(false); exceptions are silently swallowed
-            // here since the receive loop will detect the broken state and enqueue a Disconnected.
-            var json = "{\"type\":\"state_request\"}";
+            // Serialize the client-authored SessionRequest into an init_request frame.
+            // The client is the sole author of the world; the server builds itself from
+            // this payload. Fire-and-forget: the receive loop detects any broken state
+            // and enqueues a Disconnected sentinel.
+            var json = InitRequestSerializer.Serialize(_request);
             var bytes = Encoding.UTF8.GetBytes(json);
             var segment = new ArraySegment<byte>(bytes);
-            // SendAsync is safe to call from the main thread; it returns immediately if the
-            // socket is in a healthy state. We do not await to avoid blocking Poll().
             _ = _socket.SendAsync(segment, WebSocketMessageType.Text, true, _cts.Token);
         }
 
