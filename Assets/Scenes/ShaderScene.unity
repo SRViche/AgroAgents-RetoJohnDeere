@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f37522163c61029ab91d0ef0c7bb81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: AgroAgents.Presentation::AgroAgents.Presentation.Simulation.SimulationDriver
-  tickRate: 4
+  tickRate: 3
   tickBudget: 4
   speedMultiplier: 3
   startPaused: 0
@@ -1960,7 +1960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: AgroAgents.Presentation::AgroAgents.Presentation.Authoring.WorldBootstrapper
   connector:
-    rid: 6201532088171364418
+    rid: 746586194005196867
   simulationDriver: {fileID: 17201028}
   gridView: {fileID: 372214996}
   agentViews:
@@ -1997,7 +1997,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 6201532088171364418
+    - rid: 746586194005196867
       type: {class: InMemorySimulationConnector, ns: AgroAgents.InMemoryAdapter, asm: AgroAgents.InMemoryAdapter}
       data: 
 --- !u!1001 &372186993
