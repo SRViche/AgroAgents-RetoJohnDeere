@@ -131,6 +131,15 @@ namespace AgroAgents.Presentation.Authoring
             Vector3 origin = gridOrigin != null ? gridOrigin.position : transform.position;
             Mapper = new CoordinateMapper(origin, tileSize, gridWidth, gridHeight);
 
+            
+
+            
+            
+        }
+
+        public void TriggerSimulationStart(WorldSource? overrideSource=null, string overrideAuthoredText=null)
+        {
+            WorldSource activeSource= overrideSource ?? worldSource;  
             // --- Step 1: Resolve and validate SiteMarkers (Req 10.3, 10.4) ---
             if (!ResolveSiteMarkers(out List<PortGridPosition> refuelStations, out List<PortGridPosition> dumpSites))
             {
@@ -171,8 +180,6 @@ namespace AgroAgents.Presentation.Authoring
                 harvesterFuelReserveMultiplier: (double)harvesterFuelReserveMultiplier,
                 tractorFuelReserveMultiplier: (double)tractorFuelReserveMultiplier
             );
-
-            // --- Step 4: Connect ---
             _connection = connector.Connect(request);
         }
 

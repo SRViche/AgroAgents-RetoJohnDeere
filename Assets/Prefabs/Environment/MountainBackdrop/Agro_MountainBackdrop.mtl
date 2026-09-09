@@ -1,0 +1,13 @@
+newmtl NearHills
+Kd 0.23 0.30 0.19
+Ka 0.08 0.10 0.07
+Ks 0.00 0.00 0.00
+Ns 1.0
+illum 1
+
+newmtl FarMountains
+Kd 0.31 0.34 0.39
+Ka 0.10 0.11 0.13
+Ks 0.00 0.00 0.00
+Ns 1.0
+illum 1
