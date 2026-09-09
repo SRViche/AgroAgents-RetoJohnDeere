@@ -1,7 +1,7 @@
 // Feature: websocket-client-adapter
 // Unity-free static parser — no UnityEngine dependency.
 // Compiles as netstandard2.1 and can be exercised via dotnet test.
-
+using UnityEngine;
 using System;
 using System.Text.Json;
 
@@ -29,6 +29,9 @@ namespace AgroAgents.WebSocketAdapter
                     return ServerMessage.ForParseError("Missing 'type' field in JSON frame.");
 
                 var type = typeProp.GetString();
+
+                Debug.Log("Server response");
+                Debug.Log(json);
 
                 return type switch
                 {
@@ -59,7 +62,16 @@ namespace AgroAgents.WebSocketAdapter
         {
             try
             {
-                var snapshot = JsonSerializer.Deserialize<WsSimulationSnapshot>(json, _options);
+                // The server nests the snapshot under a "snapshot" property, e.g.
+                //   { "type":"state_response", "tick":N, "snapshot": { ...agents/cells... } }
+                // Deserialize that nested object, not the frame root, otherwise
+                // agents/cells/width/height are read from the wrong level and come
+                // back empty.
+                using var doc = JsonDocument.Parse(json);
+                if (!doc.RootElement.TryGetProperty("snapshot", out var snapshotElement))
+                    return ServerMessage.ForParseError("Frame is missing the 'snapshot' property.");
+
+                var snapshot = snapshotElement.Deserialize<WsSimulationSnapshot>(_options);
                 if (snapshot == null)
                     return ServerMessage.ForParseError("Deserialized snapshot was null.");
                 return factory(snapshot);

@@ -27,7 +27,7 @@ namespace AgroAgents.WebSocketAdapter
     ///   <c>_cellCache</c>) is touched only from the Unity main thread.</item>
     ///   <item>The shared <see cref="ConcurrentQueue{T}"/> is the sole cross-thread
     ///   primitive; the ReceiveLoop (background Task) only enqueues, while
-    ///   <see cref="DrainQueue"/> only dequeues — both lock-free.</item>
+    ///   <see cref="PumpIncoming"/> only dequeues — both lock-free.</item>
     /// </list>
     /// </summary>
     internal sealed class WebSocketSimulationSession : ISimulationSession, IDisposable
@@ -117,7 +117,7 @@ namespace AgroAgents.WebSocketAdapter
         /// <summary>
         /// Sends a <c>tick_request</c> frame if no tick is currently in flight (Req 5.1, 5.4).
         /// If a tick is already in flight, increments the pending queue counter so that
-        /// <see cref="DrainQueue"/> sends the next request after the current response arrives.
+        /// <see cref="PumpIncoming"/> sends the next request after the current response arrives.
         /// </summary>
         public void RequestTick()
         {
@@ -132,12 +132,14 @@ namespace AgroAgents.WebSocketAdapter
             _tickInFlight = true;
         }
 
-        // ── DrainQueue (called by SimulationDriver each frame) ────────────────
+        // ── PumpIncoming (called by SimulationDriver each frame) ──────────────
         /// <summary>
         /// Dequeues all pending <see cref="ServerMessage"/> values and processes them
-        /// on the Unity main thread (Req 4.5, 5.2, 5.5, 6.2).
+        /// on the Unity main thread (Req 4.5, 5.2, 5.5, 6.2). Processing a
+        /// tick_response clears <c>_tickInFlight</c> and sends the next queued tick,
+        /// which is what keeps the simulation advancing.
         /// </summary>
-        public void DrainQueue()
+        public void PumpIncoming()
         {
             while (_queue.TryDequeue(out ServerMessage msg))
             {
