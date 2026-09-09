@@ -46,6 +46,14 @@ namespace AgroAgents.InMemoryAdapter
                 _world.IsHalted));
         }
 
+        /// <summary>
+        /// No-op: the in-memory adapter delivers updates synchronously from
+        /// <see cref="RequestTick"/>, so there is no inbound queue to pump.
+        /// </summary>
+        public void PumpIncoming()
+        {
+        }
+
         /// <summary>No unmanaged resources; present for a future adapter that owns a socket.</summary>
         public void Dispose()
         {
