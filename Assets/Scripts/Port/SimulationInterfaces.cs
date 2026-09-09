@@ -20,6 +20,15 @@ namespace AgroAgents.SimulationPort
         /// </summary>
         void RequestTick();
 
+        /// <summary>
+        /// Pumps any queued inbound messages on the caller's thread, raising
+        /// <see cref="UpdateReceived"/> for each completed tick. Must be called once
+        /// per frame by the driver. Synchronous adapters (in-memory) implement this
+        /// as a no-op; asynchronous adapters (WebSocket) drain their receive queue
+        /// here — this is also what unblocks the next queued tick_request.
+        /// </summary>
+        void PumpIncoming();
+
         event Action<WorldUpdate> UpdateReceived;
     }
 

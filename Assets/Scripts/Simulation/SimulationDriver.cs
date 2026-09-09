@@ -109,6 +109,11 @@ namespace AgroAgents.Presentation.Simulation
                 return;
             }
 
+            // Pump any inbound messages first: this raises UpdateReceived for
+            // completed ticks and, for async adapters, clears the in-flight flag so
+            // the next queued tick_request can be sent this frame.
+            Session.PumpIncoming();
+
             // Debug controls
             Keyboard kb = Keyboard.current;
             if (kb != null)
