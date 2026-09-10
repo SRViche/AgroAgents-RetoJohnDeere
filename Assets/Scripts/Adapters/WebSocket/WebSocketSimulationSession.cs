@@ -101,6 +101,7 @@ namespace AgroAgents.WebSocketAdapter
                 dumpSites: Array.Empty<PortGridPosition>(),
                 tickIndex: initialData.Tick,
                 dischargedTotal: initialData.DischargedTotal,
+                fuelConsumedTotal: initialData.FuelConsumedTotal,
                 isHalted: initialData.IsHalted);
 
             // ── Initialise CellDiffCache from initial snapshot (Req 6.1) ──────
@@ -285,6 +286,7 @@ namespace AgroAgents.WebSocketAdapter
                 changedCells: changedCells,
                 agents: agents,
                 dischargedTotal: snapshot.DischargedTotal,
+                fuelConsumedTotal: snapshot.FuelConsumedTotal,
                 isHalted: snapshot.IsHalted);
 
             _tickInFlight = false;

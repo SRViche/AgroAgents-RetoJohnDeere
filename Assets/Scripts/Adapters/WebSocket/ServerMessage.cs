@@ -25,6 +25,7 @@ namespace AgroAgents.WebSocketAdapter
         [JsonPropertyName("tick")]             public int Tick { get; set; }
         [JsonPropertyName("isHalted")]         public bool IsHalted { get; set; }
         [JsonPropertyName("dischargedTotal")]  public int DischargedTotal { get; set; }
+        [JsonPropertyName("fuelConsumedTotal")] public int FuelConsumedTotal { get; set; }
         [JsonPropertyName("agents")]           public List<WsAgentSnapshot> Agents { get; set; } = new();
         [JsonPropertyName("cells")]            public List<WsCellSnapshot> Cells { get; set; } = new();
         [JsonPropertyName("width")]            public int Width { get; set; }

@@ -43,6 +43,7 @@ namespace AgroAgents.InMemoryAdapter
                 changed,
                 Mappings.MapAgents(_world.Agents),
                 _world.DischargedTotal,
+                _world.FuelConsumedTotal,
                 _world.IsHalted));
         }
 
@@ -106,6 +107,7 @@ namespace AgroAgents.InMemoryAdapter
                 MapPositions(model.DumpSites),
                 _world.TickIndex,
                 _world.DischargedTotal,
+                _world.FuelConsumedTotal,
                 _world.IsHalted);
         }
 
