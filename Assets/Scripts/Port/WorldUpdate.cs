@@ -13,6 +13,7 @@ namespace AgroAgents.SimulationPort
         public IReadOnlyList<PortCellSnapshot> ChangedCells { get; }
         public IReadOnlyList<PortAgentSnapshot> Agents { get; }
         public int DischargedTotal { get; }
+        public int FuelConsumedTotal { get; }
         public bool IsHalted { get; }
 
         public WorldUpdate(
@@ -20,12 +21,14 @@ namespace AgroAgents.SimulationPort
             IReadOnlyList<PortCellSnapshot> changedCells,
             IReadOnlyList<PortAgentSnapshot> agents,
             int dischargedTotal,
+            int fuelConsumedTotal,
             bool isHalted)
         {
             TickIndex = tickIndex;
             ChangedCells = changedCells;
             Agents = agents;
             DischargedTotal = dischargedTotal;
+            FuelConsumedTotal = fuelConsumedTotal;
             IsHalted = isHalted;
         }
     }

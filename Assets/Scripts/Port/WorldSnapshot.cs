@@ -17,6 +17,7 @@ namespace AgroAgents.SimulationPort
         public IReadOnlyList<PortGridPosition> DumpSites { get; }
         public long TickIndex { get; }
         public int DischargedTotal { get; }
+        public int FuelConsumedTotal { get; }
         public bool IsHalted { get; }
 
         public WorldSnapshot(
@@ -28,6 +29,7 @@ namespace AgroAgents.SimulationPort
             IReadOnlyList<PortGridPosition> dumpSites,
             long tickIndex,
             int dischargedTotal,
+            int fuelConsumedTotal,
             bool isHalted)
         {
             Width = width;
@@ -38,6 +40,7 @@ namespace AgroAgents.SimulationPort
             DumpSites = dumpSites;
             TickIndex = tickIndex;
             DischargedTotal = dischargedTotal;
+            FuelConsumedTotal = fuelConsumedTotal;
             IsHalted = isHalted;
         }
     }

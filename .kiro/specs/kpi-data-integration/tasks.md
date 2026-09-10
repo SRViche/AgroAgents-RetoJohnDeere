@@ -18,79 +18,79 @@ Testing conventions (from the design Testing Strategy, apply to every property-t
 
 ## Tasks
 
-- [ ] 1. Core: track cumulative fleet fuel consumption
-  - [ ] 1.1 Add the counter and sink to `SimulationWorld`
+- [x] 1. Core: track cumulative fleet fuel consumption
+  - [x] 1.1 Add the counter and sink to `SimulationWorld`
     - Add `public int FuelConsumedTotal { get; private set; }` initialised to `0` in the constructor alongside `DischargedTotal`
     - Add `internal void AddFuelConsumed(int amount)` mirroring `AddDischarged`
     - In `Tick()`, pass `AddFuelConsumed` into the `AgentContext` constructor alongside `AddDischarged`
     - _Requirements: 1.1, 1.2, 1.4_
 
-  - [ ] 1.2 Add the parallel fuel-consumed sink to `AgentContext`
+  - [x] 1.2 Add the parallel fuel-consumed sink to `AgentContext`
     - Add a second `Action<int>` field set from a new constructor parameter
     - Expose `public void AddFuelConsumed(int amount)` mirroring `AddDischarged`
     - _Requirements: 1.3_
 
-  - [ ] 1.3 Accumulate actual clamped burn in `Agent.Move`
+  - [x] 1.3 Accumulate actual clamped burn in `Agent.Move`
     - Capture `fuelBefore`, call `SetFuel(Fuel - FuelConsumption)`, compute `burned = fuelBefore - Fuel`, and call `context.AddFuelConsumed(burned)` when `burned > 0`
     - Leave `Refuel()` untouched so it never touches the sink
     - _Requirements: 1.3, 1.5_
 
-  - [ ] 1.4 Write property test: counter equals actual fleet burn
+  - [x] 1.4 Write property test: counter equals actual fleet burn
     - Generator: random worlds/configs advanced by a random number of ticks
     - **Property 1: Fuel-consumed counter equals actual fleet burn** (`FuelConsumedTotal` == sum over agents of each step's `fuelBefore - fuelAfter`, excluding refuel)
     - **Validates: Requirements 1.1, 1.3**
 
-  - [ ] 1.5 Write property test: counter is monotonically non-decreasing
+  - [x] 1.5 Write property test: counter is monotonically non-decreasing
     - Generator: random worlds advanced over a sequence of ticks
     - **Property 2: Fuel-consumed counter is monotonically non-decreasing** (value after each tick >= value before)
     - **Validates: Requirements 1.4**
 
-  - [ ] 1.6 Write property test: refuel does not change the counter
+  - [x] 1.6 Write property test: refuel does not change the counter
     - Generator: random agent positioned on a refuel station
     - **Property 3: Refuel does not change the fuel-consumed counter**
     - **Validates: Requirements 1.5**
 
-  - [ ] 1.7 Write unit test: counter is zero before the first tick
+  - [x] 1.7 Write unit test: counter is zero before the first tick
     - Assert `FuelConsumedTotal == 0` on a freshly constructed world
     - _Requirements: 1.2_
 
 - [ ] 2. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 3. Wire + host: surface the counter in the snapshot
-  - [ ] 3.1 Add `FuelConsumedTotal` to `SimulationSnapshot`
+- [x] 3. Wire + host: surface the counter in the snapshot
+  - [x] 3.1 Add `FuelConsumedTotal` to `SimulationSnapshot`
     - Add `[JsonPropertyName("fuelConsumedTotal")] public int FuelConsumedTotal { get; set; }` alongside `DischargedTotal`
     - _Requirements: 2.3, 8.1_
 
-  - [ ] 3.2 Populate it in `SimulationHostAdapter.GetSnapshot()`
+  - [x] 3.2 Populate it in `SimulationHostAdapter.GetSnapshot()`
     - Set `FuelConsumedTotal = world.FuelConsumedTotal` next to `DischargedTotal = world.DischargedTotal`
     - _Requirements: 1.6, 2.3_
 
-  - [ ] 3.3 Write property test: fuel-consumed total survives the wire round-trip
+  - [x] 3.3 Write property test: fuel-consumed total survives the wire round-trip
     - Generators: random integer `FuelConsumedTotal` in a `SimulationSnapshot`; random world states for `GetSnapshot()`
     - Serialize then deserialize via `SnapshotSerializer` and assert the value is preserved; assert `GetSnapshot().FuelConsumedTotal == world.FuelConsumedTotal` (SnapshotSerializer needs no code change, only assertions)
     - **Property 4: Fuel-consumed total survives the wire round-trip**
     - **Validates: Requirements 1.6, 1.7, 2.3, 8.1, 8.2, 8.3**
 
-- [ ] 4. Port + adapters: expose the counter per tick
-  - [ ] 4.1 Add `FuelConsumedTotal` to `WorldSnapshot` and `WorldUpdate`
+- [x] 4. Port + adapters: expose the counter per tick
+  - [x] 4.1 Add `FuelConsumedTotal` to `WorldSnapshot` and `WorldUpdate`
     - Add `public int FuelConsumedTotal { get; }` plus a constructor parameter next to `DischargedTotal` in both types
     - _Requirements: 1.7, 8.2_
 
-  - [ ] 4.2 Pass it through `InMemorySimulationSession`
+  - [x] 4.2 Pass it through `InMemorySimulationSession`
     - Feed `_world.FuelConsumedTotal` into both the `WorldSnapshot` built in `BuildSnapshot()` and the `WorldUpdate` raised in `RequestTick()`
     - _Requirements: 8.3_
 
-  - [ ] 4.3 Carry it through the WebSocket adapter
+  - [x] 4.3 Carry it through the WebSocket adapter
     - Add `[JsonPropertyName("fuelConsumedTotal")] public int FuelConsumedTotal { get; set; }` to `WsSimulationSnapshot` in `ServerMessage.cs` (case-insensitive parse)
     - In `WebSocketSimulationSession`, carry `FuelConsumedTotal` through when mapping `WsSimulationSnapshot` into `WorldSnapshot`/`WorldUpdate`
     - _Requirements: 8.2, 8.3_
 
-  - [ ] 4.4 Write integration test: value flow through the in-memory adapter
+  - [x] 4.4 Write integration test: value flow through the in-memory adapter
     - Drive `SimulationWorld` → `RequestTick()` → `WorldUpdate` and assert `WorldUpdate.FuelConsumedTotal` equals the core's `FuelConsumedTotal`
     - _Requirements: 8.3, 8.4_
 
-  - [ ] 4.5 Write integration test: value flow through the WebSocket adapter
+  - [x] 4.5 Write integration test: value flow through the WebSocket adapter
     - Feed a `WsSimulationSnapshot` JSON frame through the parser/session and assert the resulting `WorldUpdate.FuelConsumedTotal` equals the value in the frame
     - _Requirements: 8.3, 8.4_
 
