@@ -1960,7 +1960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: AgroAgents.Presentation::AgroAgents.Presentation.Authoring.WorldBootstrapper
   connector:
-    rid: 6201532088171364418
+    rid: 746586203772420173
   simulationDriver: {fileID: 17201028}
   gridView: {fileID: 372214996}
   agentViews:
@@ -1987,7 +1987,7 @@ MonoBehaviour:
   emptyCost: 2
   harvestedCost: 10
   heuristic: 1
-  defaultMaxLoad: 100
+  defaultMaxLoad: 20
   defaultMaxFuel: 1000
   defaultFuelConsumption: 1
   dumpPreferenceFactor: 1
@@ -1997,9 +1997,13 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 6201532088171364418
-      type: {class: InMemorySimulationConnector, ns: AgroAgents.InMemoryAdapter, asm: AgroAgents.InMemoryAdapter}
-      data: 
+    - rid: 746586203772420173
+      type: {class: WebSocketSimulationConnector, ns: AgroAgents.WebSocketAdapter, asm: AgroAgents.WebSocketAdapter}
+      data:
+        host: localhost
+        port: 8765
+        connectionTimeoutSeconds: 10
+        reconnectOnDrop: 0
 --- !u!1001 &372186993
 PrefabInstance:
   m_ObjectHideFlags: 0

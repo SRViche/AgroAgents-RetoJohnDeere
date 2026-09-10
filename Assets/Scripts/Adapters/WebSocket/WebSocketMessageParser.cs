@@ -30,9 +30,6 @@ namespace AgroAgents.WebSocketAdapter
 
                 var type = typeProp.GetString();
 
-                Debug.Log("Server response");
-                Debug.Log(json);
-
                 return type switch
                 {
                     "state_response" => ParseSnapshot(json, snapshot =>
