@@ -64,6 +64,16 @@ namespace AgroAgents.Presentation.Views
         [Tooltip("Optional. Shows Fuel and Load / MaxLoad read from the bound AgentBinding's PortAgentSnapshot.")]
         [SerializeField] private UnityEngine.UI.Text statusLabel;
 
+        [Header("Debug (read-only, updated at runtime)")]
+        [Tooltip("Live FSM state from the bound snapshot. For inspection only; overwritten every frame.")]
+        [SerializeField] private PortStateId debugState;
+
+        [Tooltip("Live load from the bound snapshot. For inspection only; overwritten every frame.")]
+        [SerializeField] private int debugLoad;
+
+        [Tooltip("Live fuel from the bound snapshot. For inspection only; overwritten every frame.")]
+        [SerializeField] private int debugFuel;
+
         #endregion
 
         #region Public Surface
@@ -83,6 +93,21 @@ namespace AgroAgents.Presentation.Views
         public int MaxLoad => maxLoad;
         public int MaxFuel => maxFuel;
         public int FuelConsumption => fuelConsumption;
+
+        // ── Debug read-outs ───────────────────────────────────────────────────
+        // Live values mirrored into the serialized debug fields each frame so they
+        // show in the Inspector during play. Inspector edits are overwritten every
+        // frame and have no functional effect.
+
+        /// <summary>Current FSM state from the bound snapshot; Inactive when unbound.</summary>
+        public PortStateId DebugState =>
+            IsBound ? _binding.CurrentSnapshot.CurrentState : PortStateId.Inactive;
+
+        /// <summary>Current load from the bound snapshot; 0 when unbound.</summary>
+        public int DebugLoad => IsBound ? _binding.CurrentSnapshot.Load : 0;
+
+        /// <summary>Current fuel from the bound snapshot; 0 when unbound.</summary>
+        public int DebugFuel => IsBound ? _binding.CurrentSnapshot.Fuel : 0;
 
         #endregion
 
@@ -132,6 +157,11 @@ namespace AgroAgents.Presentation.Views
 
             PortAgentSnapshot current = _binding.CurrentSnapshot;
             PortAgentSnapshot previous = _binding.PreviousSnapshot;
+
+            // Debug read-outs (Inspector visibility only; no functional effect).
+            debugState = current.CurrentState;
+            debugLoad = current.Load;
+            debugFuel = current.Fuel;
 
             // Position
             Vector3 previousWorld = _mapper.ToWorld(previous.Position, heightOffset);
