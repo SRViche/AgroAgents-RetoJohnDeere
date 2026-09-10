@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AgroAgents.SimulationPort;
+using UnityEngine;
 
 namespace AgroAgents.Presentation.Kpi
 {
@@ -9,10 +10,11 @@ namespace AgroAgents.Presentation.Kpi
     /// stream and accumulates the per-agent and time-series state the dashboard KPIs
     /// require, emitting one immutable <see cref="KpiViewModel"/> per processed tick.
     ///
-    /// This partial (foundation) implementation covers construction/seeding, the
-    /// per-agent accumulator type, and the state-category classification helper.
-    /// Per-update accumulation, field-coverage computation, throughput history,
-    /// view-model emission, and the tick-continuity guard are added by later tasks.
+    /// This implementation covers construction/seeding, the tick-continuity guard,
+    /// cell-diff patching, field-coverage computation, per-agent accumulation of
+    /// category tick counts and out-of-fuel events, the tick-indexed throughput
+    /// history with the fuel-per-ton headline, and building and emitting one
+    /// immutable <see cref="KpiViewModel"/> per processed tick.
     /// </summary>
     public sealed class KpiProvider : IDisposable
     {
@@ -33,6 +35,17 @@ namespace AgroAgents.Presentation.Kpi
         // per-update accumulation logic added in a later task.
         private readonly Dictionary<string, AgentAccumulator> _agentAccumulators;
 
+        // Ordered, tick-indexed history of cumulative discharged/fuel totals, one
+        // sample appended per processed update. Because updates are only processed
+        // when their tick strictly advances past the last processed tick, this list
+        // is kept in strictly ascending Tick order (Requirements 2.4, 2.5).
+        private readonly List<KpiTimeSample> _throughputHistory;
+
+        // Latest fuel-per-ton ratio, recomputed from the most recent processed
+        // sample. Zero until a sample with a positive DischargedTotal is seen
+        // (Requirements 2.6, 2.7).
+        private double _fuelPerTon;
+
         // The most recently processed tick; the continuity guard uses this to
         // discard duplicate/out-of-order updates (Requirement 7.2).
         private long _lastProcessedTick;
@@ -44,6 +57,24 @@ namespace AgroAgents.Presentation.Kpi
 
         private readonly ISimulationSession _session;
         private bool _disposed;
+
+        // The most recently emitted view model. Null until the first update is
+        // processed (Requirement 6.4). Refreshed on every processed tick.
+        private KpiViewModel? _latest;
+
+        /// <summary>
+        /// Raised exactly once per processed update, carrying the freshly built
+        /// <see cref="KpiViewModel"/> for that tick (Requirements 6.1, 6.2). Updates
+        /// discarded by the tick-continuity guard do not raise this event.
+        /// </summary>
+        public event Action<KpiViewModel> KpiUpdated;
+
+        /// <summary>
+        /// The most recently emitted <see cref="KpiViewModel"/>, or <c>null</c> if no
+        /// update has been processed yet. Lets consumers that subscribe late read the
+        /// current KPI state without waiting for the next tick (Requirement 6.4).
+        /// </summary>
+        public KpiViewModel? Latest => _latest;
 
         /// <summary>
         /// Total count of workable (Crop-class at start) cells. Fixed at construction
@@ -65,6 +96,22 @@ namespace AgroAgents.Presentation.Kpi
         /// </summary>
         public bool GapDetected => _gapDetected;
 
+        /// <summary>
+        /// KPIs #2/#3 source data: the ordered, tick-indexed history of cumulative
+        /// discharged product and cumulative fleet fuel consumption, one sample per
+        /// processed tick. Kept in strictly ascending <c>Tick</c> order because the
+        /// continuity guard only appends for updates whose tick advances past the
+        /// last processed tick (Requirements 2.4, 2.5).
+        /// </summary>
+        public IReadOnlyList<KpiTimeSample> ThroughputHistory => _throughputHistory;
+
+        /// <summary>
+        /// KPI #3 headline value: the latest cumulative fuel consumed divided by the
+        /// latest cumulative product discharged, or <c>0</c> when nothing has been
+        /// discharged yet (zero-guard, Requirements 2.6, 2.7).
+        /// </summary>
+        public double FuelPerTon => _fuelPerTon;
+
         public KpiProvider(ISimulationSession session)
         {
             _session = session ?? throw new ArgumentNullException(nameof(session));
@@ -76,6 +123,7 @@ namespace AgroAgents.Presentation.Kpi
             _cellCache = new Dictionary<(int X, int Y), PortCellState>();
             _workablePositions = new HashSet<(int X, int Y)>();
             _agentAccumulators = new Dictionary<string, AgentAccumulator>();
+            _throughputHistory = new List<KpiTimeSample>();
 
             IReadOnlyList<PortCellSnapshot> cells = initial.Cells;
             if (cells != null)
@@ -174,8 +222,167 @@ namespace AgroAgents.Presentation.Kpi
             // is computed from the latest known cell states (design step 2).
             ApplyCellDiff(update.ChangedCells);
 
+            // Accumulate per-agent category counts and out-of-fuel events from the
+            // agents observed in this update (design step 3).
+            AccumulateAgents(update.Agents);
+
+            // Append the tick-indexed throughput sample and refresh the fuel-per-ton
+            // ratio from this update's cumulative totals (design step 4).
+            AppendThroughputSample(update);
+
             // Advance the guard after a processed update.
             _lastProcessedTick = update.TickIndex;
+
+            // Build and emit exactly one immutable view model for this processed
+            // tick (design step 6, Requirements 6.1, 6.2, 6.3).
+            EmitViewModel(update.TickIndex);
+        }
+
+        /// <summary>
+        /// Builds one immutable <see cref="KpiViewModel"/> from the current
+        /// accumulated state and emits it exactly once for the processed tick
+        /// (design step 6):
+        ///   - <see cref="KpiViewModel.Tick"/> is the processed update's tick.
+        ///   - <see cref="KpiViewModel.AgentUtilization"/> carries one
+        ///     <see cref="AgentUtilizationKpi"/> per observed agent (Requirement 3).
+        ///   - <see cref="KpiViewModel.ThroughputHistory"/> is the ordered sample
+        ///     history and <see cref="KpiViewModel.FuelPerTon"/> the latest ratio
+        ///     (Requirement 2).
+        ///   - <see cref="KpiViewModel.FieldCoverage"/> is computed from the cell
+        ///     cache over the workable baseline (Requirement 5).
+        ///   - <see cref="KpiViewModel.OutOfFuelEvents"/> carries one
+        ///     <see cref="OutOfFuelEventsKpi"/> per observed agent (Requirement 4).
+        /// All six members are populated with non-null collections and initialised
+        /// values (Requirement 6.3). The built instance becomes <see cref="Latest"/>
+        /// (Requirement 6.4) and is raised via <see cref="KpiUpdated"/> once
+        /// (Requirements 6.1, 6.2).
+        /// </summary>
+        private void EmitViewModel(long tick)
+        {
+            var agentUtilization = new List<AgentUtilizationKpi>(_agentAccumulators.Count);
+            var outOfFuelEvents = new List<OutOfFuelEventsKpi>(_agentAccumulators.Count);
+
+            foreach (KeyValuePair<string, AgentAccumulator> entry in _agentAccumulators)
+            {
+                string agentId = entry.Key;
+                AgentAccumulator accumulator = entry.Value;
+
+                int totalTicks =
+                    accumulator.ProductiveTicks
+                    + accumulator.IdleTicks
+                    + accumulator.InactiveTicks;
+
+                agentUtilization.Add(new AgentUtilizationKpi(
+                    agentId,
+                    accumulator.Role,
+                    accumulator.ProductiveTicks,
+                    accumulator.IdleTicks,
+                    accumulator.InactiveTicks,
+                    totalTicks));
+
+                outOfFuelEvents.Add(new OutOfFuelEventsKpi(
+                    agentId,
+                    accumulator.Role,
+                    accumulator.OutOfFuelEventCount));
+            }
+
+            var viewModel = new KpiViewModel(
+                tick,
+                agentUtilization,
+                _throughputHistory,
+                _fuelPerTon,
+                ComputeFieldCoverage(),
+                outOfFuelEvents);
+
+            _latest = viewModel;
+            KpiUpdated?.Invoke(viewModel);
+        }
+
+        /// <summary>
+        /// Folds the agents observed in a processed update into their per-agent
+        /// accumulators (design step 3):
+        ///   - Each observed agent's current state is classified into exactly one
+        ///     <see cref="KpiStateCategory"/> and that category's tick count is
+        ///     incremented by exactly one (Requirements 3.3, 7.4).
+        ///   - When an agent's category moves from a non-Inactive category to
+        ///     <see cref="KpiStateCategory.Inactive"/> relative to its previously
+        ///     observed category, one out-of-fuel event is counted; remaining
+        ///     continuously Inactive counts no further events (Requirements 4.2, 4.3).
+        ///   - A fresh accumulator is created on first observation, carrying the
+        ///     agent's id and role (Requirements 3.4, 4.4).
+        ///   - Agents absent from this update are simply not visited, so their
+        ///     accumulators are retained unchanged (Requirement 3.7).
+        /// </summary>
+        private void AccumulateAgents(IReadOnlyList<PortAgentSnapshot> agents)
+        {
+            if (agents == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < agents.Count; i++)
+            {
+                PortAgentSnapshot agent = agents[i];
+
+                if (!_agentAccumulators.TryGetValue(agent.Id, out AgentAccumulator accumulator))
+                {
+                    accumulator = new AgentAccumulator { Role = agent.Role };
+                    _agentAccumulators[agent.Id] = accumulator;
+                }
+
+                KpiStateCategory category = Classify(agent.CurrentState);
+
+                switch (category)
+                {
+                    case KpiStateCategory.Productive:
+                        accumulator.ProductiveTicks++;
+                        break;
+                    case KpiStateCategory.Idle:
+                        accumulator.IdleTicks++;
+                        break;
+                    case KpiStateCategory.Inactive:
+                        accumulator.InactiveTicks++;
+                        break;
+                }
+
+                // Requirements 4.2/4.3: count one event only on a transition from a
+                // non-Inactive category into Inactive. A first observation that is
+                // already Inactive has no prior non-Inactive category, so it is not
+                // an event; staying Inactive across ticks is likewise not an event.
+                if (category == KpiStateCategory.Inactive
+                    && accumulator.PreviousCategory.HasValue
+                    && accumulator.PreviousCategory.Value != KpiStateCategory.Inactive)
+                {
+                    accumulator.OutOfFuelEventCount++;
+                }
+
+                accumulator.PreviousCategory = category;
+            }
+        }
+
+        /// <summary>
+        /// Appends the tick-indexed throughput sample for a processed update and
+        /// refreshes the fuel-per-ton headline (design step 4):
+        ///   - A <see cref="KpiTimeSample"/> carrying the update's <c>TickIndex</c>,
+        ///     <c>DischargedTotal</c>, and <c>FuelConsumedTotal</c> is appended to the
+        ///     ordered <see cref="ThroughputHistory"/>. Because this runs only for
+        ///     updates whose tick strictly advances past the last processed tick, the
+        ///     list stays in strictly ascending <c>Tick</c> order
+        ///     (Requirements 1.8, 2.4, 2.5, 8.4).
+        ///   - <see cref="FuelPerTon"/> is recomputed from this latest sample as
+        ///     <c>FuelConsumedTotal / DischargedTotal</c> when discharged is greater
+        ///     than zero, and is <c>0</c> otherwise (zero-guard, Requirements 2.6, 2.7).
+        /// </summary>
+        private void AppendThroughputSample(WorldUpdate update)
+        {
+            _throughputHistory.Add(new KpiTimeSample(
+                update.TickIndex,
+                update.DischargedTotal,
+                update.FuelConsumedTotal));
+
+            _fuelPerTon = update.DischargedTotal > 0
+                ? (double)update.FuelConsumedTotal / update.DischargedTotal
+                : 0.0;
         }
 
         /// <summary>

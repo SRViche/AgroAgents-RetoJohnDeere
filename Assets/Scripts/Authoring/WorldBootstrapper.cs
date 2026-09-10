@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AgroAgents.Presentation.Kpi;
 using AgroAgents.Presentation.Mapping;
 using AgroAgents.Presentation.Simulation;
 using AgroAgents.Presentation.Views;
@@ -30,6 +31,9 @@ namespace AgroAgents.Presentation.Authoring
         [SerializeField] private SimulationDriver simulationDriver;
 
         [SerializeField] private GridView gridView;
+
+        [Tooltip("Optional. When assigned, it is initialized with the live session so view components can read the per-tick KpiViewModel. Leave empty if no KPI dashboard is present.")]
+        [SerializeField] private KpiViewModelBehaviour kpiViewModel;
 
         [Tooltip("Authored list. Registration order is derived by sorting these by ordinal id, so drag order does not affect the simulation.")]
         [SerializeField] private AgentView[] agentViews = Array.Empty<AgentView>();
@@ -262,6 +266,20 @@ namespace AgroAgents.Presentation.Authoring
 
             // Initialize the grid view (floors, content, site markers).
             gridView.Initialize(snapshot, Mapper);
+
+            // Optional: wire the KPI provider to the live session so view components
+            // can read the per-tick KpiViewModel. Skipped when no dashboard is authored,
+            // but logged so a missing reference is never a silent no-op.
+            if (kpiViewModel != null)
+            {
+                kpiViewModel.Initialize(session);
+            }
+            else
+            {
+                WarnOnce("kpi_not_wired",
+                    "[Bootstrap] kpiViewModel is not assigned; KPIs will not update. " +
+                    "Add a KpiViewModelBehaviour to the scene and drag it into the WorldBootstrapper's 'Kpi View Model' field.");
+            }
         }
 
         private bool ValidateRequiredReferences()

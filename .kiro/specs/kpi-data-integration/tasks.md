@@ -130,44 +130,20 @@ Testing conventions (from the design Testing Strategy, apply to every property-t
 - [ ] 9. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 10. KpiProvider: per-agent accumulation
-  - [ ] 10.1 Accumulate per-agent category counts, retention, and out-of-fuel events
+- [x] 10. KpiProvider: per-agent accumulation
+  - [x] 10.1 Accumulate per-agent category counts, retention, and out-of-fuel events
     - For each agent in the update: classify current state, increment its category count by exactly one, and increment `OutOfFuelEventCount` when its category moved from non-Inactive to Inactive; retain accumulators for agents absent from the update; keep one accumulator per observed agent with id + role
     - _Requirements: 3.4, 3.5, 3.6, 3.7, 4.2, 4.3, 4.4, 4.5, 7.4_
 
-- [ ] 11. KpiProvider: throughput history and fuel-per-ton
-  - [ ] 11.1 Append time samples and compute `FuelPerTon`
+- [x] 11. KpiProvider: throughput history and fuel-per-ton
+  - [x] 11.1 Append time samples and compute `FuelPerTon`
     - Append `KpiTimeSample(update.TickIndex, update.DischargedTotal, update.FuelConsumedTotal)` to the ordered `ThroughputHistory`; compute `FuelPerTon` = latest `FuelConsumedTotal / DischargedTotal` when discharged > 0, else `0`
     - _Requirements: 1.8, 2.4, 2.5, 2.6, 2.7, 8.4_
 
-  - [ ] 11.2 Write property test: a time sample mirrors its source update
-    - Generator: ordered tick streams
-    - **Property 5: A time sample mirrors its source update** (`Tick`/`DischargedTotal`/`FuelConsumedTotal` all taken from the single update)
-    - **Validates: Requirements 1.8, 2.4, 8.4**
-
-  - [ ] 11.3 Write property test: throughput history ordered by ascending tick
-    - **Property 6: Throughput history is ordered by ascending tick**
-    - **Validates: Requirements 2.5**
-
-  - [ ] 11.4 Write property test: FuelPerTon ratio with zero guard
-    - **Property 7: FuelPerTon is the fuel/discharged ratio with a zero guard** (ratio when discharged > 0, else zero)
-    - **Validates: Requirements 2.6, 2.7**
-
-  - [ ] 11.5 Write unit test: FuelPerTon with zero discharged returns zero
-    - _Requirements: 2.7_
-
-- [ ] 12. KpiProvider: emit the complete view model
-  - [ ] 12.1 Build and emit one `KpiViewModel` per processed tick
+- [x] 12. KpiProvider: emit the complete view model
+  - [x] 12.1 Build and emit one `KpiViewModel` per processed tick
     - Populate all six members (`Tick`, `AgentUtilization`, `ThroughputHistory`, `FuelPerTon`, `FieldCoverage`, `OutOfFuelEvents`) as read-only; emit exactly once per processed update; surface the latest instance for consumers
     - _Requirements: 6.1, 6.2, 6.3, 6.4_
-
-  - [ ] 12.2 Write property test: exactly one well-formed view model per processed tick
-    - Generator: ordered tick streams
-    - **Property 16: Exactly one well-formed view model per processed tick** (`Tick` == `TickIndex`; all six members populated with non-null collections)
-    - **Validates: Requirements 6.1, 6.2, 6.3**
-
-  - [ ] 12.3 Write unit test: all six members populated for a processed update
-    - _Requirements: 6.3_
 
 - [ ] 13. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
