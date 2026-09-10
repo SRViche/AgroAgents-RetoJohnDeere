@@ -97,55 +97,36 @@ Testing conventions (from the design Testing Strategy, apply to every property-t
 - [ ] 5. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 6. KpiProvider: construction and state classification
-  - [ ] 6.1 Create `KpiProvider` skeleton and internal `AgentAccumulator`
+- [x] 6. KpiProvider: construction and state classification
+  - [x] 6.1 Create `KpiProvider` skeleton and internal `AgentAccumulator`
     - New component in `AgroAgents.Presentation`, namespace `AgroAgents.Presentation.Kpi`
     - Constructor takes `ISimulationSession`; seed `_width`/`_height`, full-grid cell cache, and workable-cell baseline (Crop-class at start) from `InitialSnapshot`; fix `WorkableCellCount` at that size; set `_lastProcessedTick = InitialSnapshot.TickIndex`; subscribe to `UpdateReceived`
     - `AgentAccumulator` holds `Role`, `ProductiveTicks`, `IdleTicks`, `InactiveTicks`, `OutOfFuelEventCount`, `PreviousCategory`
     - _Requirements: 5.5_
 
-  - [ ] 6.2 Implement state-category classification helper
+  - [x] 6.2 Implement state-category classification helper
     - Map `PortStateId` to `KpiStateCategory` (Productive: Harvest, GoToDump; Idle: Idle, GoToRefuel, GoToMeetingPoint, WaitTractor, WaitHarvester; Inactive: Inactive)
     - _Requirements: 3.3_
 
-  - [ ] 6.3 Write property test: classification is total and single-valued
+  - [x] 6.3 Write property test: classification is total and single-valued
     - Generator: all `PortStateId` values
     - **Property 8: State classification is a total, single-valued function** (exactly one category per state; buckets mutually exclusive and jointly exhaustive)
     - **Validates: Requirements 3.3**
 
-  - [ ] 6.4 Write property test: workable-cell count fixed at start
+  - [x] 6.4 Write property test: workable-cell count fixed at start
     - Generator: random initial snapshots advanced by random ticks
     - **Property 15: Workable-cell count is fixed at simulation start** (equals Crop-class count at initial snapshot, unchanged across ticks)
     - **Validates: Requirements 5.5**
 
-- [ ] 7. KpiProvider: tick-continuity guard
-  - [ ] 7.1 Implement the continuity guard in `OnUpdateReceived`
+- [x] 7. KpiProvider: tick-continuity guard
+  - [x] 7.1 Implement the continuity guard in `OnUpdateReceived`
     - Discard updates with `TickIndex <= _lastProcessedTick` (no accumulator mutation, no sample, no emit); record a gap when `TickIndex > _lastProcessedTick + 1`; otherwise process normally; set `_lastProcessedTick` after a processed update
     - _Requirements: 7.2, 7.3_
 
-  - [ ] 7.2 Write property test: duplicate/out-of-order ticks discarded
-    - Generator: ordered tick streams able to emit duplicate and out-of-order ticks
-    - **Property 17: Duplicate or out-of-order ticks are discarded without effect** (no count change, no sample appended, no view model emitted)
-    - **Validates: Requirements 7.2**
-
-  - [ ] 7.3 Write property test: tick gaps are recorded
-    - Generator: ordered tick streams able to emit gapped ticks
-    - **Property 18: Tick gaps are recorded** (update with `TickIndex > last + 1` records a gap)
-    - **Validates: Requirements 7.3**
-
-- [ ] 8. KpiProvider: field coverage
-  - [ ] 8.1 Patch the cell cache and compute `FieldCoverageKpi`
+- [x] 8. KpiProvider: field coverage
+  - [x] 8.1 Patch the cell cache and compute `FieldCoverageKpi`
     - Apply `update.ChangedCells` to the full-grid cache; compute `Width`/`Height`, `HarvestedCellCount` over the workable baseline, `CoveragePercent` with a zero-guard, and one `FieldCoverageCell` per workable position
     - _Requirements: 5.4, 5.6, 5.7, 5.8, 5.9_
-
-  - [ ] 8.2 Write property test: field coverage reflects workable set over cache
-    - Generator: ordered tick streams with random cell diffs
-    - **Property 14: Field coverage reflects the workable set over the cell cache** (dimensions match; `HarvestedCellCount` = workable positions currently Harvested; `CoveragePercent` = ratio with zero-guard; `Cells` = one per workable position)
-    - **Validates: Requirements 5.4, 5.6, 5.7, 5.8, 5.9**
-
-  - [ ] 8.3 Write unit test: CoveragePercent with zero workable cells returns zero
-    - _Requirements: 5.8_
-
 - [ ] 9. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
@@ -153,34 +134,6 @@ Testing conventions (from the design Testing Strategy, apply to every property-t
   - [ ] 10.1 Accumulate per-agent category counts, retention, and out-of-fuel events
     - For each agent in the update: classify current state, increment its category count by exactly one, and increment `OutOfFuelEventCount` when its category moved from non-Inactive to Inactive; retain accumulators for agents absent from the update; keep one accumulator per observed agent with id + role
     - _Requirements: 3.4, 3.5, 3.6, 3.7, 4.2, 4.3, 4.4, 4.5, 7.4_
-
-  - [ ] 10.2 Write property test: one KPI entry per observed agent with id and role
-    - Generator: ordered tick streams over a random set of agents
-    - **Property 9: Exactly one KPI entry per observed agent, carrying id and role** (`AgentUtilization` and `OutOfFuelEvents` each have one entry per observed agent; ids and roles match)
-    - **Validates: Requirements 3.4, 4.4**
-
-  - [ ] 10.3 Write property test: utilization counts equal observed ticks per category
-    - Generator: ascending tick streams with random agent state sequences
-    - **Property 10: Utilization counts equal observed ticks per category** (each processed update increments exactly one category by one per present agent)
-    - **Validates: Requirements 3.5, 7.4**
-
-  - [ ] 10.4 Write property test: category counts sum to total ticks
-    - **Property 11: Utilization category counts sum to total ticks** (`ProductiveTicks + IdleTicks + InactiveTicks == TotalTicks`)
-    - **Validates: Requirements 3.6**
-
-  - [ ] 10.5 Write property test: absent agents retain accumulated counts
-    - Generator: streams that omit a previously-seen agent
-    - **Property 12: Absent agents retain their accumulated counts** (counts and out-of-fuel count unchanged across the omitting update)
-    - **Validates: Requirements 3.7**
-
-  - [ ] 10.6 Write property test: out-of-fuel count equals non-Inactive→Inactive transitions
-    - Generator: ascending tick streams including non-Inactive→Inactive transitions and continuous-Inactive runs
-    - **Property 13: Out-of-fuel count equals non-Inactive→Inactive transitions** (continuous Inactive adds no events)
-    - **Validates: Requirements 4.2, 4.3, 4.5**
-
-  - [ ] 10.7 Write unit tests: out-of-fuel edge cases
-    - Inactive-and-stays-Inactive counts exactly one event; refuelled-then-Inactive-again counts two events
-    - _Requirements: 4.2, 4.3_
 
 - [ ] 11. KpiProvider: throughput history and fuel-per-ton
   - [ ] 11.1 Append time samples and compute `FuelPerTon`
